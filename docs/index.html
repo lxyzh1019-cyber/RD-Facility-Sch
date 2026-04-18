@@ -1,185 +1,99 @@
 <!doctype html>
-<html lang="en">
+<html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Red Deer Drop-In Schedule · 2026-04-17 23:22</title>
+<meta charset=utf-8>
+<title>Red Deer Schedule</title>
 <style>
-  :root {
-    --bg: #0f172a;
-    --panel: #1e293b;
-    --panel-2: #0b1222;
-    --text: #e2e8f0;
-    --muted: #94a3b8;
-    --border: #334155;
-    --accent: #38bdf8;
-    --swim:  #2563eb;
-    --skate: #0891b2;
-    --climb: #ca8a04;
-    --today: #22c55e;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: var(--bg); color: var(--text);
-    line-height: 1.4;
-  }
-  header {
-    padding: 16px 24px;
-    background: var(--panel);
-    border-bottom: 1px solid var(--border);
-    display: flex; flex-wrap: wrap; gap: 16px;
-    align-items: center; justify-content: space-between;
-  }
-  header h1 { margin: 0; font-size: 18px; letter-spacing: 0.3px; }
-  header .meta { color: var(--muted); font-size: 13px; }
-  header .controls { display: flex; gap: 8px; flex-wrap: wrap; }
-  .chip {
-    padding: 6px 12px; border-radius: 999px;
-    border: 1px solid var(--border); background: var(--panel-2);
-    color: var(--text); font-size: 12px; cursor: pointer;
-    user-select: none;
-  }
-  .chip.active { background: var(--accent); color: #0b1222; border-color: var(--accent); }
-  .legend { display: inline-flex; gap: 10px; align-items: center; font-size: 12px; color: var(--muted); }
-  .legend .sw { width: 10px; height: 10px; border-radius: 2px; display: inline-block; margin-right: 4px; vertical-align: middle; }
-
-  main { padding: 16px 24px 48px 24px; }
-
-  .day {
-    margin-bottom: 20px;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  .day-head {
-    padding: 10px 16px;
-    background: var(--panel-2);
-    border-bottom: 1px solid var(--border);
-    display: flex; justify-content: space-between; align-items: baseline;
-  }
-  .day-head .date { font-weight: 600; font-size: 15px; }
-  .day-head .count { color: var(--muted); font-size: 12px; }
-  .day.today .day-head {
-    border-left: 3px solid var(--today);
-  }
-  .day.today .date::after {
-    content: " · Today";
-    color: var(--today);
-    font-weight: 500;
-  }
-
-  .domain-row {
-    display: grid;
-    grid-template-columns: 150px 1fr;
-    border-top: 1px solid var(--border);
-  }
-  .domain-row:first-child { border-top: none; }
-  .domain-label {
-    padding: 12px 16px;
-    background: var(--panel-2);
-    font-size: 13px;
-    font-weight: 600;
-    display: flex; flex-direction: column; gap: 2px;
-    justify-content: center;
-    border-right: 1px solid var(--border);
-  }
-  .domain-label .zh { font-size: 11px; color: var(--muted); font-weight: 400; }
-  .domain-label.swim  { border-left: 3px solid var(--swim); }
-  .domain-label.skate { border-left: 3px solid var(--skate); }
-  .domain-label.climb { border-left: 3px solid var(--climb); }
-
-  .sessions {
-    padding: 10px; display: flex; flex-wrap: wrap; gap: 8px;
-    min-height: 48px; align-items: flex-start;
-  }
-  .session {
-    display: flex; flex-direction: column; gap: 2px;
-    padding: 8px 10px;
-    border-radius: 6px;
-    background: var(--panel-2);
-    border: 1px solid var(--border);
-    border-left-width: 3px;
-    font-size: 12.5px;
-    min-width: 200px;
-    text-decoration: none; color: inherit;
-    transition: transform 120ms ease, border-color 120ms ease;
-  }
-  .session:hover {
-    transform: translateY(-1px);
-    border-color: var(--accent);
-  }
-  .session.swim  { border-left-color: var(--swim); }
-  .session.skate { border-left-color: var(--skate); }
-  .session.climb { border-left-color: var(--climb); }
-  .session .time { font-weight: 600; }
-  .session .name { color: var(--muted); font-size: 11.5px; }
-  .session .loc  { color: var(--text); font-size: 11.5px; opacity: 0.85; }
-  .session .dur  { color: var(--muted); font-size: 10.5px; }
-
-  .empty { color: var(--muted); font-style: italic; font-size: 12px; padding: 4px 6px; }
-
-  footer {
-    padding: 16px 24px; color: var(--muted);
-    font-size: 11.5px; border-top: 1px solid var(--border);
-  }
-  footer code { background: var(--panel); padding: 2px 6px; border-radius: 4px; }
-
-  /* hide-domain toggles */
-  body.hide-swim  .domain-row.swim  { display: none; }
-  body.hide-skate .domain-row.skate { display: none; }
-  body.hide-climb .domain-row.climb { display: none; }
+body { font-family: system-ui; background: #0f172a; color: #e2e8f0; margin: 0; padding: 20px; }
+h1 { margin-top: 0; }
+.day { background: #1e293b; margin: 20px 0; padding: 20px; border-radius: 8px; }
+.activity { margin: 15px 0; }
+.session { background: #0b1222; padding: 10px; margin: 8px 0; border-left: 3px solid #38bdf8; border-radius: 4px; }
+.time { font-weight: bold; }
+.loc { color: #94a3b8; font-size: 0.9em; }
 </style>
 </head>
 <body>
-
-<header>
-  <div>
-    <h1>Red Deer Drop-In Schedule · 红鹿市公共活动时间表</h1>
-    <div class="meta">
-      Generated 2026-04-17 23:22 · 7 sessions · 3 day window
-    </div>
-  </div>
-  <div class="controls">
-    <span class="legend">
-      <span><span class="sw" style="background:var(--swim)"></span>Swim</span>
-      <span><span class="sw" style="background:var(--skate)"></span>Skate</span>
-      <span><span class="sw" style="background:var(--climb)"></span>Climb</span>
-    </span>
-    <button class="chip active" data-toggle="swim">Swim</button>
-    <button class="chip active" data-toggle="skate">Skate</button>
-    <button class="chip active" data-toggle="climb">Climb</button>
-  </div>
-</header>
-
-<main>
-<section class="day today">  <div class="day-head">    <span class="date">Fri, Apr 17, 2026</span>    <span class="count">1 session(s)</span>  </div>  <div class="domain-row swim">  <div class="domain-label swim">    <span>Swimming</span>    <span class="zh">游泳</span>  </div>  <div class="sessions"><span class="empty">— no sessions —</span></div></div><div class="domain-row skate">  <div class="domain-label skate">    <span>Skating / Arena</span>    <span class="zh">冰场</span>  </div>  <div class="sessions"><a class="session skate" href="https://looknbook.reddeer.ca/RedDeer/public/Category/ClassList?CategoryGUID=6f659e94-7b6a-4042-8c63-fbeba072256d&amp;StartDate=2026-04-17&amp;Participant=00000000-0000-0000-0000-000000000000" target="_blank" rel="noopener">  <span class="time">11:30 AM – 1:00 PM</span>  <span class="name">Drop-in Adult Hockey Servus</span>  <span class="loc">📍 Servus Arena</span>  <span class="dur">90 min · 30 spaces</span></a></div></div><div class="domain-row climb">  <div class="domain-label climb">    <span>Climbing &amp; Bouldering</span>    <span class="zh">攀岩</span>  </div>  <div class="sessions"><span class="empty">— no sessions —</span></div></div></section>
-<section class="day">  <div class="day-head">    <span class="date">Sat, Apr 18, 2026</span>    <span class="count">6 session(s)</span>  </div>  <div class="domain-row swim">  <div class="domain-label swim">    <span>Swimming</span>    <span class="zh">游泳</span>  </div>  <div class="sessions"><a class="session swim" href="https://looknbook.reddeer.ca/RedDeer/public/Category/ClassList?CategoryGUID=09d0604f-a42d-43a3-a93c-64a93ebda20c&amp;StartDate=2026-04-18&amp;Participant=00000000-0000-0000-0000-000000000000" target="_blank" rel="noopener">  <span class="time">12:00 PM – 2:00 PM</span>  <span class="name">Lane Swimming</span>  <span class="loc">📍 Don Moore Recreation Centre - Indoor Pool</span>  <span class="dur">120 min · 40 spaces</span></a>
-<a class="session swim" href="https://looknbook.reddeer.ca/RedDeer/public/Category/ClassList?CategoryGUID=09d0604f-a42d-43a3-a93c-64a93ebda20c&amp;StartDate=2026-04-18&amp;Participant=00000000-0000-0000-0000-000000000000" target="_blank" rel="noopener">  <span class="time">12:00 PM – 9:00 PM</span>  <span class="name">Public Swimming</span>  <span class="loc">📍 Collicutt Centre - Water Park</span>  <span class="dur">540 min · 350 spaces</span></a>
-<a class="session swim" href="https://looknbook.reddeer.ca/RedDeer/public/Category/ClassList?CategoryGUID=09d0604f-a42d-43a3-a93c-64a93ebda20c&amp;StartDate=2026-04-18&amp;Participant=00000000-0000-0000-0000-000000000000" target="_blank" rel="noopener">  <span class="time">12:00 PM – 1:00 PM</span>  <span class="name">Adult &amp; Child Swimming</span>  <span class="loc">📍 Michener Aquatic Centre - Warm Pool</span>  <span class="dur">60 min · 50 spaces</span></a>
-<a class="session swim" href="https://looknbook.reddeer.ca/RedDeer/public/Category/ClassList?CategoryGUID=09d0604f-a42d-43a3-a93c-64a93ebda20c&amp;StartDate=2026-04-18&amp;Participant=00000000-0000-0000-0000-000000000000" target="_blank" rel="noopener">  <span class="time">12:00 PM – 1:00 PM</span>  <span class="name">Lane Swimming</span>  <span class="loc">📍 Michener Aquatic Centre - Main Pool</span>  <span class="dur">60 min · 50 spaces</span></a>
-<a class="session swim" href="https://looknbook.reddeer.ca/RedDeer/public/Category/ClassList?CategoryGUID=09d0604f-a42d-43a3-a93c-64a93ebda20c&amp;StartDate=2026-04-18&amp;Participant=00000000-0000-0000-0000-000000000000" target="_blank" rel="noopener">  <span class="time">1:00 PM – 3:00 PM</span>  <span class="name">Public &amp; Lane Swimming</span>  <span class="loc">📍 Michener Aquatic Centre - Joint Pools (3)</span>  <span class="dur">120 min · 100 spaces</span></a>
-<a class="session swim" href="https://looknbook.reddeer.ca/RedDeer/public/Category/ClassList?CategoryGUID=09d0604f-a42d-43a3-a93c-64a93ebda20c&amp;StartDate=2026-04-18&amp;Participant=00000000-0000-0000-0000-000000000000" target="_blank" rel="noopener">  <span class="time">2:00 PM – 5:00 PM</span>  <span class="name">Public Swimming</span>  <span class="loc">📍 Don Moore Recreation Centre - Indoor Pool</span>  <span class="dur">180 min · 80 spaces</span></a></div></div><div class="domain-row skate">  <div class="domain-label skate">    <span>Skating / Arena</span>    <span class="zh">冰场</span>  </div>  <div class="sessions"><span class="empty">— no sessions —</span></div></div><div class="domain-row climb">  <div class="domain-label climb">    <span>Climbing &amp; Bouldering</span>    <span class="zh">攀岩</span>  </div>  <div class="sessions"><span class="empty">— no sessions —</span></div></div></section>
-<section class="day">  <div class="day-head">    <span class="date">Sun, Apr 19, 2026</span>    <span class="count">0 session(s)</span>  </div>  <div class="domain-row swim">  <div class="domain-label swim">    <span>Swimming</span>    <span class="zh">游泳</span>  </div>  <div class="sessions"><span class="empty">— no sessions —</span></div></div><div class="domain-row skate">  <div class="domain-label skate">    <span>Skating / Arena</span>    <span class="zh">冰场</span>  </div>  <div class="sessions"><span class="empty">— no sessions —</span></div></div><div class="domain-row climb">  <div class="domain-label climb">    <span>Climbing &amp; Bouldering</span>    <span class="zh">攀岩</span>  </div>  <div class="sessions"><span class="empty">— no sessions —</span></div></div></section>
-</main>
-
-<footer>
-  Data source: <a href="https://looknbook.reddeer.ca" style="color:var(--accent)">looknbook.reddeer.ca</a>.
-  Click any session card to open the original booking page. To refresh: <code>python sync.py</code>.
-  Confidence: High · Last scrape 2026-04-17 23:22.
-</footer>
-
-<script>
-  document.querySelectorAll('.chip[data-toggle]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const key = btn.dataset.toggle;
-      btn.classList.toggle('active');
-      document.body.classList.toggle('hide-' + key, !btn.classList.contains('active'));
-    });
-  });
-</script>
-
-</body>
-</html>
+<h1>Red Deer Drop-In Schedule</h1>
+<p>Last updated: 2026-04-18 02:55</p>
+<div class="day"><h2>2026-04-18</h2><div class="activity"><strong>Swim</strong><div class="session"><div class="time">12:00 PM - 2:00 PM
+    120 mins</div><div>Lane Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div><div class="session"><div class="time">12:00 PM - 9:00 PM
+    540 mins</div><div>Public Swimming</div><div class="loc">Collicutt Centre - Water Park</div></div><div class="session"><div class="time">12:00 PM - 1:00 PM
+    60 mins</div><div>Adult & Child Swimming</div><div class="loc">Michener Aquatic Centre - Warm Pool</div></div><div class="session"><div class="time">12:00 PM - 1:00 PM
+    60 mins</div><div>Lane Swimming</div><div class="loc">Michener Aquatic Centre - Main Pool</div></div><div class="session"><div class="time">1:00 PM - 3:00 PM
+    120 mins</div><div>Public & Lane Swimming</div><div class="loc">Michener Aquatic Centre - Joint Pools (3)</div></div><div class="session"><div class="time">2:00 PM - 5:00 PM
+    180 mins</div><div>Public Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div></div></div><div class="day"><h2>2026-04-19</h2><div class="activity"><strong>Swim</strong><div class="session"><div class="time">10:00 AM - 9:00 PM
+    660 mins</div><div>Public Swimming</div><div class="loc">Collicutt Centre - Water Park</div></div><div class="session"><div class="time">12:00 PM - 2:00 PM
+    120 mins</div><div>Lane Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div><div class="session"><div class="time">2:00 PM - 5:00 PM
+    180 mins</div><div>Public Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div></div></div><div class="day"><h2>2026-04-20</h2><div class="activity"><strong>Swim</strong><div class="session"><div class="time">5:30 AM - 9:00 AM
+    210 mins</div><div>Lane Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div><div class="session"><div class="time">6:00 AM - 9:00 AM
+    180 mins</div><div>Lane Swimming</div><div class="loc">Michener Aquatic Centre - Main Pool</div></div><div class="session"><div class="time">6:30 AM - 9:00 AM
+    150 mins</div><div>Lane Swim</div><div class="loc">Collicutt Centre - Water Park</div></div><div class="session"><div class="time">10:00 AM - 9:00 PM
+    660 mins</div><div>Public Swimming</div><div class="loc">Collicutt Centre - Water Park</div></div><div class="session"><div class="time">11:00 AM - 1:00 PM
+    120 mins</div><div>Lane Swimming</div><div class="loc">Michener Aquatic Centre - Main Pool</div></div><div class="session"><div class="time">11:00 AM - 1:00 PM
+    120 mins</div><div>Adult & Child Swimming</div><div class="loc">Michener Aquatic Centre - Warm Pool</div></div><div class="session"><div class="time">12:00 PM - 1:00 PM
+    60 mins</div><div>Lane Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div><div class="session"><div class="time">2:00 PM - 4:00 PM
+    120 mins</div><div>Public & Lane Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div><div class="session"><div class="time">8:30 PM - 10:00 PM
+    90 mins</div><div>Lane Swimming - Online Reservation</div><div class="loc">Michener Aquatic Centre - Main Pool</div></div><div class="session"><div class="time">8:30 PM - 10:00 PM
+    90 mins</div><div>Lane Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div></div><div class="activity"><strong>Skate</strong><div class="session"><div class="time">10:30 AM - 11:30 AM
+    60 mins</div><div>55+ Public Skating</div><div class="loc">Collicutt Centre - Arena</div></div><div class="session"><div class="time">11:30 AM - 1:00 PM
+    90 mins</div><div>Drop-in Adult Hockey Servus</div><div class="loc">Servus Arena</div></div><div class="session"><div class="time">11:45 AM - 12:45 PM
+    60 mins</div><div>Public Skating</div><div class="loc">Collicutt Centre - Arena</div></div><div class="session"><div class="time">3:30 PM - 5:30 PM
+    120 mins</div><div>Drop In Roller Skating DC</div><div class="loc">G.H Dawe Community Centre - Arena</div></div></div></div><div class="day"><h2>2026-04-21</h2><div class="activity"><strong>Swim</strong><div class="session"><div class="time">5:30 AM - 9:00 AM
+    210 mins</div><div>Lane Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div><div class="session"><div class="time">6:30 AM - 9:00 AM
+    150 mins</div><div>Lane Swim</div><div class="loc">Collicutt Centre - Water Park</div></div><div class="session"><div class="time">8:00 AM - 9:00 AM
+    60 mins</div><div>Lane Swimming</div><div class="loc">Michener Aquatic Centre - Main Pool</div></div><div class="session"><div class="time">10:00 AM - 9:00 PM
+    660 mins</div><div>Public Swimming</div><div class="loc">Collicutt Centre - Water Park</div></div><div class="session"><div class="time">11:00 AM - 1:00 PM
+    120 mins</div><div>Lane Swimming</div><div class="loc">Michener Aquatic Centre - Main Pool</div></div><div class="session"><div class="time">11:00 AM - 1:00 PM
+    120 mins</div><div>Adult & Child Swimming</div><div class="loc">Michener Aquatic Centre - Warm Pool</div></div><div class="session"><div class="time">12:00 PM - 1:00 PM
+    60 mins</div><div>Lane Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div><div class="session"><div class="time">2:00 PM - 4:30 PM
+    150 mins</div><div>Public & Lane Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div><div class="session"><div class="time">8:30 PM - 10:00 PM
+    90 mins</div><div>Lane Swimming - Online Reservation</div><div class="loc">Michener Aquatic Centre - Main Pool</div></div><div class="session"><div class="time">8:30 PM - 10:00 PM
+    90 mins</div><div>Lane Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div></div><div class="activity"><strong>Skate</strong><div class="session"><div class="time">10:30 AM - 11:30 AM
+    60 mins</div><div>Public Skating</div><div class="loc">Collicutt Centre - Arena</div></div><div class="session"><div class="time">11:30 AM - 1:00 PM
+    90 mins</div><div>Drop-in Adult Hockey Servus</div><div class="loc">Servus Arena</div></div><div class="session"><div class="time">11:30 AM - 1:00 PM
+    90 mins</div><div>Drop-in Adult Ball Hockey DC</div><div class="loc">G.H Dawe Community Centre - Arena</div></div></div></div><div class="day"><h2>2026-04-22</h2><div class="activity"><strong>Swim</strong><div class="session"><div class="time">5:30 AM - 9:00 AM
+    210 mins</div><div>Lane Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div><div class="session"><div class="time">6:30 AM - 9:00 AM
+    150 mins</div><div>Lane Swim</div><div class="loc">Collicutt Centre - Water Park</div></div><div class="session"><div class="time">7:30 AM - 9:00 AM
+    90 mins</div><div>Lane Swimming</div><div class="loc">Michener Aquatic Centre - Main Pool</div></div><div class="session"><div class="time">10:00 AM - 9:00 PM
+    660 mins</div><div>Public Swimming</div><div class="loc">Collicutt Centre - Water Park</div></div><div class="session"><div class="time">11:00 AM - 1:00 PM
+    120 mins</div><div>Adult & Child Swimming</div><div class="loc">Michener Aquatic Centre - Warm Pool</div></div><div class="session"><div class="time">11:00 AM - 1:00 PM
+    120 mins</div><div>Lane Swimming</div><div class="loc">Michener Aquatic Centre - Main Pool</div></div><div class="session"><div class="time">12:00 PM - 1:00 PM
+    60 mins</div><div>Lane Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div><div class="session"><div class="time">2:00 PM - 4:00 PM
+    120 mins</div><div>Public & Lane Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div><div class="session"><div class="time">8:30 PM - 10:00 PM
+    90 mins</div><div>Lane Swimming - Online Reservation</div><div class="loc">Michener Aquatic Centre - Main Pool</div></div><div class="session"><div class="time">8:30 PM - 10:00 PM
+    90 mins</div><div>Lane Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div></div><div class="activity"><strong>Skate</strong><div class="session"><div class="time">10:30 AM - 11:30 AM
+    60 mins</div><div>Drop-in Adult & Preschool Skate CC</div><div class="loc">Collicutt Centre - Arena</div></div><div class="session"><div class="time">11:30 AM - 1:00 PM
+    90 mins</div><div>Drop-in Adult Hockey Servus</div><div class="loc">Servus Arena</div></div><div class="session"><div class="time">11:45 AM - 12:45 PM
+    60 mins</div><div>Public Skating</div><div class="loc">Collicutt Centre - Arena</div></div><div class="session"><div class="time">2:00 PM - 3:15 PM
+    75 mins</div><div>55+ Public Skating Servus</div><div class="loc">Servus Arena</div></div><div class="session"><div class="time">3:30 PM - 5:30 PM
+    120 mins</div><div>Drop In Roller Skating DC</div><div class="loc">G.H Dawe Community Centre - Arena</div></div></div><div class="activity"><strong>Climb</strong><div class="session"><div class="time">5:30 PM - 7:30 PM
+    120 mins</div><div>Drop-in Wall Climbing - Fieldhouse</div><div class="loc">Collicutt Centre - Field House Climbing Wall</div></div><div class="session"><div class="time">7:30 PM - 9:00 PM
+    90 mins</div><div>Drop-in Wall Climbing - Mr. Big</div><div class="loc">Collicutt Centre - Climbing Wall - Main Street</div></div></div></div><div class="day"><h2>2026-04-23</h2><div class="activity"><strong>Swim</strong><div class="session"><div class="time">5:30 AM - 9:00 AM
+    210 mins</div><div>Lane Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div><div class="session"><div class="time">6:30 AM - 9:00 AM
+    150 mins</div><div>Lane Swim</div><div class="loc">Collicutt Centre - Water Park</div></div><div class="session"><div class="time">8:00 AM - 9:00 AM
+    60 mins</div><div>Lane Swimming</div><div class="loc">Michener Aquatic Centre - Main Pool</div></div><div class="session"><div class="time">10:00 AM - 9:00 PM
+    660 mins</div><div>Public Swimming</div><div class="loc">Collicutt Centre - Water Park</div></div><div class="session"><div class="time">11:00 AM - 1:00 PM
+    120 mins</div><div>Adult & Child Swimming</div><div class="loc">Michener Aquatic Centre - Warm Pool</div></div><div class="session"><div class="time">11:00 AM - 1:00 PM
+    120 mins</div><div>Lane Swimming</div><div class="loc">Michener Aquatic Centre - Main Pool</div></div><div class="session"><div class="time">12:00 PM - 1:00 PM
+    60 mins</div><div>Lane Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div><div class="session"><div class="time">2:00 PM - 4:30 PM
+    150 mins</div><div>Public & Lane Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div><div class="session"><div class="time">8:30 PM - 10:00 PM
+    90 mins</div><div>Lane Swimming - Online Reservation</div><div class="loc">Michener Aquatic Centre - Main Pool</div></div><div class="session"><div class="time">8:30 PM - 10:00 PM
+    90 mins</div><div>Lane Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div></div><div class="activity"><strong>Skate</strong><div class="session"><div class="time">11:30 AM - 1:00 PM
+    90 mins</div><div>Drop-in Adult Hockey Servus</div><div class="loc">Servus Arena</div></div><div class="session"><div class="time">11:30 AM - 1:00 PM
+    90 mins</div><div>Drop-in Adult Ball Hockey DC</div><div class="loc">G.H Dawe Community Centre - Arena</div></div><div class="session"><div class="time">11:45 AM - 12:45 PM
+    60 mins</div><div>Public Skating</div><div class="loc">Collicutt Centre - Arena</div></div><div class="session"><div class="time">2:00 PM - 3:15 PM
+    75 mins</div><div>55+ Public Skating Servus</div><div class="loc">Servus Arena</div></div><div class="session"><div class="time">3:30 PM - 5:30 PM
+    120 mins</div><div>Drop In Roller Skating DC</div><div class="loc">G.H Dawe Community Centre - Arena</div></div></div></div><div class="day"><h2>2026-04-24</h2><div class="activity"><strong>Swim</strong><div class="session"><div class="time">5:30 AM - 9:00 AM
+    210 mins</div><div>Lane Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div><div class="session"><div class="time">6:00 AM - 9:00 AM
+    180 mins</div><div>Lane Swimming</div><div class="loc">Michener Aquatic Centre - Main Pool</div></div><div class="session"><div class="time">6:30 AM - 9:00 AM
+    150 mins</div><div>Lane Swim</div><div class="loc">Collicutt Centre - Water Park</div></div><div class="session"><div class="time">10:00 AM - 9:00 PM
+    660 mins</div><div>Public Swimming</div><div class="loc">Collicutt Centre - Water Park</div></div><div class="session"><div class="time">11:00 AM - 1:00 PM
+    120 mins</div><div>Adult & Child Swimming</div><div class="loc">Michener Aquatic Centre - Warm Pool</div></div><div class="session"><div class="time">11:00 AM - 1:00 PM
+    120 mins</div><div>Lane Swimming</div><div class="loc">Michener Aquatic Centre - Main Pool</div></div><div class="session"><div class="time">12:00 PM - 1:00 PM
+    60 mins</div><div>Lane Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div><div class="session"><div class="time">2:00 PM - 4:00 PM
+    120 mins</div><div>Public & Lane Swimming</div><div class="loc">Don Moore Recreation Centre - Indoor Pool</div></div><div class="session"><div class="time">7:00 PM - 9:00 PM
+    120 mins</div><div>Public & Lane Swimming</div><div class="loc">Michener Aquatic Centre - Joint Pools (3)</div></div></div><div class="activity"><strong>Skate</strong><div class="session"><div class="time">10:30 AM - 11:30 AM
+    60 mins</div><div>55+ Public Skating</div><div class="loc">Collicutt Centre - Arena</div></div><div class="session"><div class="time">1:30 PM - 3:00 PM
+    90 mins</div><div>Drop-in Adult Hockey</div><div class="loc">Collicutt Centre - Arena</div></div><div class="session"><div class="time">4:00 PM - 5:30 PM
+    90 mins</div><div>Drop-in Youth Ball Hockey DC</div><div class="loc">G.H Dawe Community Centre - Arena</div></div></div></div></body></html>
