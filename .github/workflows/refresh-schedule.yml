@@ -8,30 +8,34 @@ on:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-          cache: 'pip'
 
       - name: Install dependencies
-        run: pip install requests beautifulsoup4 lxml
+        run: pip install -q requests beautifulsoup4 lxml
+
+      - name: Create docs directory
+        run: mkdir -p docs
 
       - name: Scrape and render schedule
-        run: |
-          mkdir -p docs
-          python scripts/sync.py --out docs/index.html
+        run: python scripts/sync.py --out docs/index.html
 
-      - name: Commit and push changes
+      - name: Push changes
         run: |
-          git config user.name  "github-actions[bot]"
+          git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          
           git add docs/index.html
-          git diff --cached --exit-code || (git commit -m "chore: refresh drop-in schedule" && git push origin main)
+          git commit -m "chore: refresh schedule" || echo "No changes to commit"
+          git push origin main || true
