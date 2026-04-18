@@ -33,6 +33,7 @@ jobs:
           import datetime
           import re
           import html as html_escape
+          import json
           import time
           
           BASE_URL = "https://looknbook.reddeer.ca/RedDeer/public/Category/ClassList"
@@ -42,11 +43,32 @@ jobs:
               "climb": "654b289b-816d-443f-a84f-8f0cae322e54"
           }
           
-          CATEGORIES = {
-              "swim": {"label": "Swimming", "label_zh": "游泳", "color": "#2563eb"},
-              "skate": {"label": "Skating / Arena", "label_zh": "冰场", "color": "#0891b2"},
-              "climb": {"label": "Climbing & Bouldering", "label_zh": "攀岩", "color": "#ca8a04"}
+          SPORT_EMOJI = {"swim": "🏊", "skate": "⛸️", "climb": "🧗"}
+          SPORT_LABEL = {"swim": "Swimming", "skate": "Skating / Arena", "climb": "Climbing & Bouldering"}
+          SPORT_LABEL_ZH = {"swim": "游泳", "skate": "冰场", "climb": "攀岩"}
+          
+          # Facility code mapping
+          FACILITY_CODES = {
+              "Collicutt Centre": ("CC", "Collicutt"),
+              "Don Moore Recreation Centre": ("RC", "Don Moore<br>Recreation"),
+              "Michener Aquatic Centre": ("MC", "Michener<br>Aquatic"),
+              "G.H. Dawe Community Centre": ("DC", "G.H. Dawe<br>Community"),
+              "Servus Arena": ("SA", "Servus<br>Arena"),
           }
+          
+          def get_facility_code(venue):
+              # Strip prefixes like "Leisure Centres - " or "Arenas - "
+              clean = re.sub(r'^(Leisure Centres|Arenas)\s*-\s*', '', venue).strip()
+              for key, (code, name) in FACILITY_CODES.items():
+                  if key in clean:
+                      return code, name, clean
+              # Default for unknown facilities
+              words = clean.split()
+              if len(words) >= 2:
+                  code = (words[0][0] + words[1][0]).upper()
+              else:
+                  code = clean[:2].upper()
+              return code, clean, clean
           
           SWIM_KEYWORDS = ("lane swimming", "public swimming", "public & lane", "adult & child swimming")
           
@@ -55,8 +77,8 @@ jobs:
                   self.date = date
                   self.domain = domain
                   self.name = name
-                  self.location = location
-                  self.venue = venue
+                  self.location = location  # e.g. "Indoor Pool", "Water Park", "Arena"
+                  self.venue = venue  # e.g. "Leisure Centres - Don Moore Recreation Centre"
                   self.spaces = spaces
                   
                   parts = re.split(r'\s*[-–]\s*', time_raw.split('(')[0].strip(), maxsplit=1)
@@ -79,7 +101,24 @@ jobs:
                   if 'PM' in self.end_time and h != 12: h += 12
                   if 'AM' in self.end_time and h == 12: h = 0
                   return h * 60 + mn
+              
+              def duration_str(self):
+                  mins = self.end_min() - self.start_min()
+                  if mins <= 0: return "—"
+                  if mins < 60: return f"{mins} min"
+                  hrs = mins / 60
+                  if hrs == int(hrs): return f"{int(hrs)} hr{'s' if hrs > 1 else ''}"
+                  return f"{hrs:.1f} hrs"
+              
+              def short_name(self):
+                  # Shorten names for bar display
+                  n = self.name
+                  n = n.replace("Drop-in", "").replace("Drop-In", "").strip()
+                  if len(n) > 20:
+                      n = n[:18] + "..."
+                  return n
           
+          # Scrape all sessions
           all_sessions = {}
           for domain, guid in GUIDS.items():
               for i in range(14):
@@ -105,43 +144,42 @@ jobs:
                               continue
                           
                           if d not in all_sessions:
-                              all_sessions[d] = {}
-                          if domain not in all_sessions[d]:
-                              all_sessions[d][domain] = []
-                          
-                          all_sessions[d][domain].append(Session(d, domain, name, time_raw, location, venue, spaces))
+                              all_sessions[d] = []
+                          all_sessions[d].append(Session(d, domain, name, time_raw, location, venue, spaces))
                   except Exception as e:
                       print(f"[warn] {domain} {d}: {e}")
-                  time.sleep(0.5)
+                  time.sleep(0.3)
           
-          def detect_conflicts(sessions_by_domain):
-              sports = list(sessions_by_domain.keys())
-              for i, sport_a in enumerate(sports):
-                  for sport_b in sports[i+1:]:
-                      for sess_a in sessions_by_domain[sport_a]:
-                          for sess_b in sessions_by_domain[sport_b]:
-                              if sess_a.venue != sess_b.venue:
-                                  continue
-                              
-                              a_s, a_e = sess_a.start_min(), sess_a.end_min()
-                              b_s, b_e = sess_b.start_min(), sess_b.end_min()
-                              
-                              if a_e <= b_s:
-                                  gap = b_s - a_e
-                              elif b_e <= a_s:
-                                  gap = a_s - b_e
-                              else:
-                                  gap = -(min(a_e, b_e) - max(a_s, b_s))
-                              
-                              if gap > 30: continue
-                              kind = "overlap" if gap < 0 else "tight-transition"
-                              sess_a.conflicts.append((sport_b, sess_b.name, sess_b.location, gap, kind))
-                              sess_b.conflicts.append((sport_a, sess_a.name, sess_a.location, gap, kind))
+          # Detect conflicts: only cross-sport at same facility
+          def detect_conflicts(sessions):
+              for i, a in enumerate(sessions):
+                  for b in sessions[i+1:]:
+                      if a.domain == b.domain: continue  # skip same sport
+                      code_a, _, _ = get_facility_code(a.venue)
+                      code_b, _, _ = get_facility_code(b.venue)
+                      if code_a != code_b: continue  # different facility
+                      
+                      a_s, a_e = a.start_min(), a.end_min()
+                      b_s, b_e = b.start_min(), b.end_min()
+                      
+                      if a_e <= b_s:
+                          gap = b_s - a_e
+                      elif b_e <= a_s:
+                          gap = a_s - b_e
+                      else:
+                          gap = -(min(a_e, b_e) - max(a_s, b_s))
+                      
+                      if gap > 30: continue
+                      a.conflicts.append(f"{SPORT_EMOJI[b.domain]} {b.short_name()} ({b.start_time} – {b.end_time})")
+                      b.conflicts.append(f"{SPORT_EMOJI[a.domain]} {a.short_name()} ({a.start_time} – {a.end_time})")
           
           for d in all_sessions:
               detect_conflicts(all_sessions[d])
           
-          html = """<!doctype html>
+          # Generate HTML
+          generated_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+          
+          html = '''<!doctype html>
           <html lang="en">
           <head>
           <meta charset="utf-8">
@@ -149,25 +187,22 @@ jobs:
           <title>Red Deer Drop-In Schedule</title>
           <style>
           :root {
-            --bg: #0f172a; --panel: #1e293b; --panel-2: #0b1222;
-            --text: #e2e8f0; --muted: #94a3b8; --border: #334155;
+            --bg: #0f172a; --panel: #1e293b; --panel-2: #0b1222; --panel-3: #162033;
+            --text: #e2e8f0; --muted: #94a3b8; --border: #334155; --border-strong: #64748b;
             --accent: #38bdf8;
             --swim: #2563eb; --skate: #0891b2; --climb: #ca8a04;
             --conflict: #ef4444;
           }
           * { box-sizing: border-box; }
           html, body { margin: 0; padding: 0; }
-          body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.4; }
-          
-          header { padding: 16px 24px; background: var(--panel); border-bottom: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
-          header h1 { margin: 0; font-size: 18px; flex: 1; }
-          header .meta { color: var(--muted); font-size: 13px; }
-          header .controls { display: flex; gap: 8px; flex-wrap: wrap; }
-          .chip { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--panel-2); color: var(--text); font-size: 12px; cursor: pointer; user-select: none; transition: all 120ms ease; }
-          .chip:hover { border-color: var(--accent); }
+          body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); font-size: 15px; }
+          header { padding: 14px 20px; background: var(--panel); border-bottom: 1px solid var(--border); display: flex; gap: 16px; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 8px rgba(0,0,0,0.4); flex-wrap: wrap; }
+          header h1 { margin: 0; font-size: 17px; }
+          header .meta { color: var(--muted); font-size: 12px; }
+          .chip { padding: 8px 14px; border-radius: 999px; border: 1px solid var(--border); background: var(--panel-2); color: var(--text); font-size: 13px; cursor: pointer; user-select: none; font-weight: 500; }
           .chip.active { background: var(--accent); color: #0b1222; border-color: var(--accent); }
+          main { padding: 20px; }
           
-          main { padding: 24px; }
           .view { display: none; }
           .view.active { display: block; }
           
@@ -181,7 +216,7 @@ jobs:
           .domain-label.swim { border-left: 3px solid var(--swim); }
           .domain-label.skate { border-left: 3px solid var(--skate); }
           .domain-label.climb { border-left: 3px solid var(--climb); }
-          .sessions { padding: 10px; display: flex; flex-wrap: wrap; gap: 8px; min-height: 48px; align-items: flex-start; }
+          .sessions-flex { padding: 10px; display: flex; flex-wrap: wrap; gap: 8px; min-height: 48px; align-items: flex-start; }
           .session { display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border-radius: 6px; background: var(--panel-2); border: 1px solid var(--border); border-left-width: 3px; font-size: 12.5px; min-width: 220px; max-width: 320px; }
           .session.swim { border-left-color: var(--swim); }
           .session.skate { border-left-color: var(--skate); }
@@ -192,71 +227,96 @@ jobs:
           .empty { color: var(--muted); font-style: italic; font-size: 12px; padding: 4px 6px; }
           
           /* Gantt View */
-          .gantt-day { margin-bottom: 30px; }
-          .gantt-day-title { font-weight: 600; font-size: 15px; margin-bottom: 16px; padding: 12px; background: var(--panel-2); border-radius: 8px; }
+          .gantt-day { margin-bottom: 24px; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+          .gantt-day-title { font-weight: 700; font-size: 16px; padding: 12px 18px; background: var(--panel-2); border-bottom: 1px solid var(--border); }
+          .gantt-day-title.today { background: linear-gradient(90deg, rgba(56,189,248,0.25), var(--panel-2)); }
+          .gantt-day-title.weekend { background: linear-gradient(90deg, rgba(234,179,8,0.15), var(--panel-2)); }
           
-          .gantt-facility-block { margin-bottom: 16px; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-          .gantt-facility-name { padding: 10px 16px; background: var(--panel-2); border-bottom: 1px solid var(--border); font-weight: 600; font-size: 11px; }
+          .chart-scroll { position: relative; overflow-x: auto; }
+          .chart-grid { display: grid; grid-template-columns: 160px repeat(16, 70px); min-width: 1280px; }
           
-          .gantt-timeline-wrapper { position: relative; overflow-x: auto; }
-          .gantt-timeline { display: grid; grid-template-columns: repeat(16, 1fr); min-height: 120px; position: relative; padding: 16px; gap: 0; }
-          .gantt-timeline::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 100%; pointer-events: none; background-image: repeating-linear-gradient(to right, transparent, transparent calc(100%/16 - 2px), var(--border) calc(100%/16 - 2px), var(--border) 100%/16); }
+          .time-cell { background: var(--panel-3); border-bottom: 2px solid var(--border-strong); border-right: 1px solid var(--border); padding: 8px 0; text-align: center; font-size: 12px; font-weight: 700; color: var(--muted); }
+          .time-cell.corner { border-right: 2px solid var(--border-strong); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
           
-          .gantt-bar-container { position: absolute; width: 100%; height: 100%; top: 16px; left: 16px; right: 16px; pointer-events: none; }
-          .gantt-bar { position: absolute; height: 24px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; font-size: 9px; color: white; padding: 0 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; cursor: pointer; pointer-events: all; transition: opacity 100ms ease; }
-          .gantt-bar:hover { opacity: 0.9; }
-          .gantt-bar.swim { background: var(--swim); }
-          .gantt-bar.skate { background: var(--skate); }
-          .gantt-bar.climb { background: var(--climb); }
-          .gantt-bar.conflict { border: 2px solid var(--conflict); }
+          .facility-label { background: var(--panel-2); border-right: 2px solid var(--border-strong); border-bottom: 3px solid var(--border-strong); padding: 0 12px; display: flex; gap: 8px; align-items: center; justify-content: flex-start; }
+          .facility-label .code { flex-shrink: 0; background: var(--accent); color: #0b1222; padding: 3px 7px; border-radius: 4px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; min-width: 32px; text-align: center; }
+          .facility-label .name { font-size: 12px; color: var(--text); line-height: 1.3; font-weight: 500; }
           
-          .tooltip { position: absolute; background: rgba(0,0,0,0.9); color: white; padding: 6px 10px; border-radius: 4px; font-size: 11px; pointer-events: none; z-index: 1000; white-space: nowrap; bottom: 100%; left: 50%; transform: translateX(-50%) translateY(-4px); opacity: 0; transition: opacity 100ms ease; }
-          .gantt-bar:hover .tooltip { opacity: 1; }
+          .bars-row { position: relative; height: 48px; background-color: var(--panel); background-image: repeating-linear-gradient(to right, transparent 0, transparent 69px, var(--border) 69px, var(--border) 70px); display: flex; align-items: center; }
+          .bars-row.facility-last { border-bottom: 3px solid var(--border-strong); }
+          .bars-row.sub-2 { height: 80px; }
+          .bars-row.sub-3 { height: 112px; }
           
-          .gantt-time-axis { position: sticky; top: 60px; z-index: 99; background: var(--panel-2); border-bottom: 1px solid var(--border); display: grid; grid-template-columns: repeat(16, 1fr); padding: 8px 16px; gap: 0; font-size: 11px; font-weight: 600; color: var(--muted); }
-          .gantt-hour { text-align: center; border-right: 1px solid var(--border); }
-          .gantt-hour:last-child { border-right: none; }
+          .bar { position: absolute; height: 32px; top: 50%; transform: translateY(-50%); border-radius: 5px; border: 2px solid rgba(255,255,255,0.15); display: flex; align-items: center; padding: 0 7px; font-size: 12px; color: white; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; transition: transform 100ms ease, box-shadow 100ms ease; gap: 4px; }
+          .bar:hover { transform: translateY(-50%) translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,0.4); z-index: 5; }
+          .bar.swim { background: var(--swim); }
+          .bar.skate { background: var(--skate); }
+          .bar.climb { background: var(--climb); }
+          .bar.conflict { border-color: var(--conflict); box-shadow: 0 0 0 2px rgba(239,68,68,0.4); }
           
-          footer { padding: 16px 24px; color: var(--muted); font-size: 11.5px; border-top: 1px solid var(--border); }
+          .bar .emoji { font-size: 14px; }
+          .bar .bar-time { font-size: 11px; opacity: 0.9; font-weight: 600; }
+          .bar .bar-name { font-size: 11.5px; font-weight: 600; }
           
-          body.hide-swim .domain-row.swim { display: none; }
-          body.hide-skate .domain-row.skate { display: none; }
-          body.hide-climb .domain-row.climb { display: none; }
-          body.hide-swim .gantt-bar.swim { display: none; }
-          body.hide-skate .gantt-bar.skate { display: none; }
-          body.hide-climb .gantt-bar.climb { display: none; }
+          .bars-row.sub-2 .bar { top: 8px; transform: none; }
+          .bars-row.sub-2 .bar:hover { top: 7px; transform: none; }
+          .bars-row.sub-2 .bar.row-2 { top: 40px; }
+          .bars-row.sub-2 .bar.row-2:hover { top: 39px; }
+          
+          /* Popup */
+          .popup-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 500; align-items: center; justify-content: center; padding: 20px; }
+          .popup-overlay.active { display: flex; }
+          .popup { background: var(--panel); border: 1px solid var(--border-strong); border-radius: 12px; padding: 24px; max-width: 420px; width: 100%; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
+          .popup-sport { font-size: 20px; font-weight: 700; color: var(--accent); margin-bottom: 12px; }
+          .popup-row { display: flex; gap: 10px; margin-bottom: 10px; font-size: 14px; line-height: 1.4; }
+          .popup-row .label { color: var(--muted); min-width: 80px; font-weight: 600; }
+          .popup-row .value { color: var(--text); flex: 1; }
+          .popup-row .value.time { color: #fcd34d; font-weight: 700; font-size: 15px; }
+          .popup-conflict { margin-top: 16px; padding: 10px 12px; background: rgba(239,68,68,0.15); border: 1px solid var(--conflict); border-radius: 6px; font-size: 13px; color: var(--conflict); font-weight: 600; line-height: 1.5; }
+          .popup-close { margin-top: 18px; padding: 10px 20px; background: var(--accent); color: #0b1222; border: none; border-radius: 6px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; }
+          
+          footer { padding: 14px 20px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); }
+          
+          body.hide-swim .bar.swim, body.hide-swim .domain-row.swim { display: none; }
+          body.hide-skate .bar.skate, body.hide-skate .domain-row.skate { display: none; }
+          body.hide-climb .bar.climb, body.hide-climb .domain-row.climb { display: none; }
           </style>
           </head>
           <body>
           <header>
           <div style="flex: 1;">
-          <h1>Red Deer Drop-In Schedule · 红鹿市公共活动时间表</h1>
-          <div class="meta">Last updated: """ + datetime.datetime.now().strftime("%Y-%m-%d %H:%M") + """</div>
+          <h1>Red Deer Drop-In Schedule · 红鹿市时间表</h1>
+          <div class="meta">Last updated: ''' + generated_at + '''</div>
           </div>
-          <div class="controls">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
           <button class="chip active" data-view="list">📋 List</button>
           <button class="chip" data-view="gantt">📊 Gantt</button>
-          <button class="chip active" data-toggle="swim">Swim</button>
-          <button class="chip active" data-toggle="skate">Skate</button>
-          <button class="chip active" data-toggle="climb">Climb</button>
+          <button class="chip active" data-toggle="swim">🏊 Swim</button>
+          <button class="chip active" data-toggle="skate">⛸️ Skate</button>
+          <button class="chip active" data-toggle="climb">🧗 Climb</button>
           </div>
           </header>
           <main>
           
           <!-- LIST VIEW -->
           <div id="list-view" class="view active">
-          """
+          '''
           
           today = datetime.date.today().isoformat()
+          
           for d in sorted(all_sessions.keys()):
-              is_today = " today" if d == today else ""
               day_obj = datetime.datetime.fromisoformat(d).date()
               day_label = day_obj.strftime("%a, %b %d, %Y")
+              is_today = (d == today)
               
-              html += f'<section class="day{is_today}"><div class="day-head">{day_label}</div>'
+              html += f'<section class="day"><div class="day-head">{"📍 " if is_today else ""}{day_label}{" · Today" if is_today else ""}</div>'
+              
+              by_domain = {"swim": [], "skate": [], "climb": []}
+              for s in all_sessions[d]:
+                  by_domain[s.domain].append(s)
               
               for domain in ["swim", "skate", "climb"]:
-                  items = all_sessions[d].get(domain, [])
+                  items = by_domain[domain]
                   if items:
                       cards = ""
                       for s in items:
@@ -264,84 +324,185 @@ jobs:
                   else:
                       cards = '<span class="empty">— no sessions —</span>'
                   
-                  html += f'<div class="domain-row {domain}"><div class="domain-label {domain}"><span>{CATEGORIES[domain]["label"]}</span><span class="zh">{CATEGORIES[domain]["label_zh"]}</span></div><div class="sessions">{cards}</div></div>'
+                  html += f'<div class="domain-row {domain}"><div class="domain-label {domain}"><span>{SPORT_LABEL[domain]}</span><span class="zh">{SPORT_LABEL_ZH[domain]}</span></div><div class="sessions-flex">{cards}</div></div>'
               
               html += '</section>'
           
-          html += """</div>
+          html += '''</div>
           
           <!-- GANTT VIEW -->
           <div id="gantt-view" class="view">
-          """
+          '''
           
           for d in sorted(all_sessions.keys()):
               day_obj = datetime.datetime.fromisoformat(d).date()
               day_label = day_obj.strftime("%a, %b %d, %Y")
+              is_today = (d == today)
+              is_weekend = day_obj.weekday() >= 5
               
-              html += f'<div class="gantt-day"><div class="gantt-day-title">{day_label}</div>'
+              title_class = "today" if is_today else ("weekend" if is_weekend else "")
               
-              facilities = {}
-              for domain in all_sessions[d]:
-                  for s in all_sessions[d][domain]:
-                      if s.venue not in facilities:
-                          facilities[s.venue] = []
-                      facilities[s.venue].append(s)
+              html += f'<div class="gantt-day"><div class="gantt-day-title {title_class}">📅 {day_label}{" · Today" if is_today else ""}</div>'
+              html += '<div class="chart-scroll"><div class="chart-grid">'
               
-              for venue in sorted(facilities.keys()):
-                  html += f'<div class="gantt-facility-block"><div class="gantt-facility-name">{html_escape.escape(venue)}</div><div class="gantt-timeline-wrapper"><div class="gantt-timeline"><div class="gantt-bar-container">'
+              # Time axis
+              html += '<div class="time-cell corner">Facility</div>'
+              for hour in range(6, 22):
+                  period = "AM" if hour < 12 else "PM"
+                  display_hour = hour if hour <= 12 else hour - 12
+                  html += f'<div class="time-cell">{display_hour} {period}</div>'
+              
+              # Group sessions by facility code + sport
+              # Structure: {facility_code: {name, sports: {sport: [sessions_sorted_by_pool]}}}
+              facility_groups = {}
+              for s in all_sessions[d]:
+                  code, fac_name, _ = get_facility_code(s.venue)
+                  if code not in facility_groups:
+                      facility_groups[code] = {"name": fac_name, "sports": {}}
+                  if s.domain not in facility_groups[code]["sports"]:
+                      facility_groups[code]["sports"][s.domain] = []
+                  facility_groups[code]["sports"][s.domain].append(s)
+              
+              # Render each facility
+              for code in sorted(facility_groups.keys()):
+                  fg = facility_groups[code]
+                  sport_list = [sp for sp in ["swim", "skate", "climb"] if sp in fg["sports"]]
+                  num_sports = len(sport_list)
                   
-                  sessions = facilities[venue]
-                  bar_y = 0
-                  for s in sessions:
-                      start = s.start_min()
-                      end = s.end_min()
-                      left_pct = ((start - (6 * 60)) / (16 * 60)) * 100
-                      width_pct = ((end - start) / (16 * 60)) * 100
-                      conflict_cls = "conflict" if s.conflicts else ""
-                      
-                      start_display = s.start_time.replace(' ', '')
-                      bar_label = s.name
-                      if width_pct > 15:
-                          bar_label = f"{start_display} {s.name}"
-                      
-                      html += f'<div class="gantt-bar {s.domain} {conflict_cls}" style="left: {left_pct}%; width: {width_pct}%; top: {bar_y}px;" title="{html_escape.escape(s.name)}">{html_escape.escape(bar_label)}<div class="tooltip">{s.start_time} – {s.end_time}</div></div>'
-                      bar_y += 28
+                  # Facility label spans all sport rows
+                  html += f'<div class="facility-label" style="grid-row: span {num_sports};"><span class="code">{code}</span><span class="name">{fg["name"]}</span></div>'
                   
-                  html += '</div></div></div></div>'
+                  for idx, sport in enumerate(sport_list):
+                      sessions = fg["sports"][sport]
+                      is_last = (idx == num_sports - 1)
+                      last_cls = " facility-last" if is_last else ""
+                      
+                      # Determine if we need sub-rows (different pools/locations at same facility+sport)
+                      unique_locations = list(set(s.location for s in sessions))
+                      num_sub_rows = len(unique_locations)
+                      sub_cls = ""
+                      if num_sub_rows == 2: sub_cls = " sub-2"
+                      elif num_sub_rows >= 3: sub_cls = " sub-3"
+                      
+                      html += f'<div class="bars-row{sub_cls}{last_cls}" style="grid-column: 2 / span 16;">'
+                      
+                      # Map locations to sub-row index
+                      loc_to_row = {loc: i for i, loc in enumerate(unique_locations)}
+                      
+                      for s in sessions:
+                          start = s.start_min()
+                          end = s.end_min()
+                          left_px = ((start - 360) / 60) * 70  # 6 AM = 360 min
+                          width_px = ((end - start) / 60) * 70
+                          
+                          conflict_cls = " conflict" if s.conflicts else ""
+                          
+                          # Sub-row positioning
+                          row_cls = ""
+                          if num_sub_rows >= 2:
+                              row_idx = loc_to_row[s.location]
+                              if row_idx == 1: row_cls = " row-2"
+                              elif row_idx == 2: row_cls = " row-3"
+                          
+                          # Build popup data
+                          popup_data = {
+                              "sport": f"{SPORT_EMOJI[s.domain]} {s.name}",
+                              "time": f"{s.start_time} – {s.end_time}",
+                              "duration": s.duration_str(),
+                              "facility": fg["name"].replace("<br>", " "),
+                              "pool": s.location,
+                              "date": day_label
+                          }
+                          if s.conflicts:
+                              popup_data["conflict"] = "Overlaps with: " + "; ".join(s.conflicts[:3])
+                          
+                          popup_json = html_escape.escape(json.dumps(popup_data), quote=True)
+                          short = html_escape.escape(s.short_name())
+                          
+                          html += f'<div class="bar {s.domain}{conflict_cls}{row_cls}" data-popup="{popup_json}" style="left: {left_px}px; width: {width_px}px;">'
+                          html += f'<span class="emoji">{SPORT_EMOJI[s.domain]}</span><span class="bar-time">{s.start_time.replace(" ", "").replace(":00", "")}</span><span class="bar-name">{short}</span>'
+                          html += '</div>'
+                      
+                      html += '</div>'
               
-              html += '</div>'
+              html += '</div></div></div>'
           
-          html += """
-          <div class="gantt-time-axis">
-          """
-          for hour in range(6, 23):
-              period = "AM" if hour < 12 else "PM"
-              display_hour = hour if hour <= 12 else hour - 12
-              html += f'<div class="gantt-hour">{display_hour} {period}</div>'
-          html += """</div>
-          </div>
+          html += '''</div>
           </main>
-          <footer>Toggle between List and Gantt views. Red borders = cross-sport conflicts within ±30 min.</footer>
+          
+          <!-- Detail Popup -->
+          <div class="popup-overlay" id="popup">
+            <div class="popup" onclick="event.stopPropagation()">
+              <div class="popup-sport" id="popup-sport"></div>
+              <div class="popup-row"><span class="label">⏰ Time</span><span class="value time" id="popup-time"></span></div>
+              <div class="popup-row"><span class="label">⏱ Length</span><span class="value" id="popup-duration"></span></div>
+              <div class="popup-row"><span class="label">📍 Where</span><span class="value" id="popup-facility"></span></div>
+              <div class="popup-row"><span class="label" id="popup-area-label">🏊 Pool</span><span class="value" id="popup-pool"></span></div>
+              <div class="popup-row"><span class="label">📅 Date</span><span class="value" id="popup-date"></span></div>
+              <div class="popup-conflict" id="popup-conflict" style="display:none"></div>
+              <button class="popup-close" onclick="closePopup()">Close / 关闭</button>
+            </div>
+          </div>
+          
+          <footer>
+            🏊 Swim · ⛸️ Skate · 🧗 Climb · ⚠️ Red border = conflict at same facility · Tap any bar for details.
+          </footer>
+          
           <script>
           document.querySelectorAll('[data-view]').forEach(function(btn) {
-              btn.onclick = function() {
-                  const view = btn.dataset.view;
-                  document.querySelectorAll('[data-view]').forEach(function(b) { b.classList.remove('active'); });
-                  btn.classList.add('active');
-                  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
-                  document.getElementById(view + '-view').classList.add('active');
-              };
+            btn.onclick = function() {
+              const view = btn.dataset.view;
+              document.querySelectorAll('[data-view]').forEach(function(b) { b.classList.remove('active'); });
+              btn.classList.add('active');
+              document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+              document.getElementById(view + '-view').classList.add('active');
+            };
           });
+          
           document.querySelectorAll('[data-toggle]').forEach(function(btn) {
-              btn.onclick = function() {
-                  const key = btn.dataset.toggle;
-                  btn.classList.toggle('active');
-                  document.body.classList.toggle('hide-' + key, !btn.classList.contains('active'));
-              };
+            btn.onclick = function() {
+              const key = btn.dataset.toggle;
+              btn.classList.toggle('active');
+              document.body.classList.toggle('hide-' + key, !btn.classList.contains('active'));
+            };
           });
+          
+          document.querySelectorAll('.bar').forEach(function(bar) {
+            bar.onclick = function() {
+              const data = JSON.parse(bar.dataset.popup);
+              document.getElementById('popup-sport').textContent = data.sport;
+              document.getElementById('popup-time').textContent = data.time;
+              document.getElementById('popup-duration').textContent = data.duration;
+              document.getElementById('popup-facility').textContent = data.facility;
+              
+              let areaLabel = '📍 Area';
+              if (bar.classList.contains('swim')) { areaLabel = '🏊 Pool'; }
+              else if (bar.classList.contains('skate')) { areaLabel = '⛸️ Rink'; }
+              else if (bar.classList.contains('climb')) { areaLabel = '🧗 Wall'; }
+              
+              document.getElementById('popup-area-label').textContent = areaLabel;
+              document.getElementById('popup-pool').textContent = data.pool || '—';
+              document.getElementById('popup-date').textContent = data.date;
+              
+              const conflictEl = document.getElementById('popup-conflict');
+              if (data.conflict) {
+                conflictEl.textContent = '⚠️ ' + data.conflict;
+                conflictEl.style.display = 'block';
+              } else {
+                conflictEl.style.display = 'none';
+              }
+              
+              document.getElementById('popup').classList.add('active');
+            };
+          });
+          
+          function closePopup() {
+            document.getElementById('popup').classList.remove('active');
+          }
+          document.getElementById('popup').onclick = closePopup;
           </script>
           </body>
-          </html>"""
+          </html>'''
           
           with open('docs/index.html', 'w', encoding='utf-8') as f:
               f.write(html)
