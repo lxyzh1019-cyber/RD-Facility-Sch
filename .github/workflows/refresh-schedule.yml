@@ -55,12 +55,7 @@ jobs:
             exit 0
           fi
 
-          # Strip the volatile timestamp line before diffing, so we only commit
-          # when the actual schedule content changed. Optional — comment out
-          # if you want every run to commit (useful as a heartbeat).
-          # (Currently we just commit unconditionally when the file differs;
-          # GitHub Actions' free tier supports this at our frequency.)
-
+          git pull origin main --no-edit
           git add public/index.html
           git commit -m "chore: refresh drop-in schedule [skip ci]"
-          git push
+          git push origin main
