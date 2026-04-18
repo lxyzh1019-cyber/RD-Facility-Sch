@@ -45,7 +45,7 @@ jobs:
         run: python scripts/sync.py
         # sync.py writes to public/index.html by default when GITHUB_ACTIONS=true
 
-- name: Commit changes if schedule updated
+      - name: Commit changes if schedule updated
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
