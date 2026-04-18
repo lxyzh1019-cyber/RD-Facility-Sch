@@ -112,29 +112,35 @@ jobs:
                   except Exception as e:
                       print(f"[warn] {domain} {d}: {e}")
           
-          def detect_conflicts(sessions_list):
-              for domain, sessions in sessions_list.items():
-                  for i, a in enumerate(sessions):
-                      for b in sessions[i+1:]:
-                          a_s, a_e = a.start_min(), a.end_min()
-                          b_s, b_e = b.start_min(), b.end_min()
-                          
-                          if a_e <= b_s:
-                              gap = b_s - a_e
-                          elif b_e <= a_s:
-                              gap = a_s - b_e
-                          else:
-                              gap = -(min(a_e, b_e) - max(a_s, b_s))
-                          
-                          if gap > 30: continue
-                          kind = "overlap" if gap < 0 else "tight-transition"
-                          a.conflicts.append((b.domain, b.name, b.venue, b.location, gap, kind))
-                          b.conflicts.append((a.domain, a.name, a.venue, a.location, gap, kind))
+          # Detect conflicts: ONLY cross-sport at same venue
+          def detect_conflicts(sessions_by_domain):
+              sports = list(sessions_by_domain.keys())
+              for i, sport_a in enumerate(sports):
+                  for sport_b in sports[i+1:]:
+                      for sess_a in sessions_by_domain[sport_a]:
+                          for sess_b in sessions_by_domain[sport_b]:
+                              if sess_a.venue != sess_b.venue:
+                                  continue
+                              
+                              a_s, a_e = sess_a.start_min(), sess_a.end_min()
+                              b_s, b_e = sess_b.start_min(), sess_b.end_min()
+                              
+                              if a_e <= b_s:
+                                  gap = b_s - a_e
+                              elif b_e <= a_s:
+                                  gap = a_s - b_e
+                              else:
+                                  gap = -(min(a_e, b_e) - max(a_s, b_s))
+                              
+                              if gap > 30: continue
+                              kind = "overlap" if gap < 0 else "tight-transition"
+                              sess_a.conflicts.append((sport_b, sess_b.name, sess_b.location, gap, kind))
+                              sess_b.conflicts.append((sport_a, sess_a.name, sess_a.location, gap, kind))
           
           for d in all_sessions:
               detect_conflicts(all_sessions[d])
           
-          # Generate HTML with Gantt and List views
+          # Generate HTML
           html = """<!doctype html>
           <html lang="en">
           <head>
@@ -147,7 +153,7 @@ jobs:
             --text: #e2e8f0; --muted: #94a3b8; --border: #334155;
             --accent: #38bdf8;
             --swim: #2563eb; --skate: #0891b2; --climb: #ca8a04;
-            --warn: #f59e0b; --conflict: #ef4444;
+            --conflict: #ef4444;
           }
           * { box-sizing: border-box; }
           body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.4; }
@@ -159,9 +165,10 @@ jobs:
           .chip.active { background: var(--accent); color: #0b1222; border-color: var(--accent); }
           main { padding: 16px 24px 48px; }
           
-          /* List View */
           .view { display: none; }
           .view.active { display: block; }
+          
+          /* List View */
           .day { margin-bottom: 20px; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
           .day-head { padding: 10px 16px; background: var(--panel-2); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: baseline; }
           .day-head .date { font-weight: 600; font-size: 15px; }
@@ -180,30 +187,40 @@ jobs:
           .session .time { font-weight: 600; }
           .session .name { color: var(--muted); font-size: 11.5px; }
           .session .loc { color: var(--text); font-size: 11.5px; opacity: 0.85; }
-          .session.has-conflict { border-color: var(--conflict); }
           .empty { color: var(--muted); font-style: italic; font-size: 12px; padding: 4px 6px; }
           
           /* Gantt View */
-          .gantt-container { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; overflow-x: auto; margin-bottom: 20px; }
-          .gantt-day { margin-bottom: 20px; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
-          .gantt-title { font-weight: 600; font-size: 15px; margin-bottom: 16px; }
-          .gantt-grid { display: grid; grid-template-columns: 200px 1fr; gap: 0; }
-          .gantt-facility { display: contents; }
-          .gantt-facility-name { padding: 8px; background: var(--panel-2); border: 1px solid var(--border); font-size: 12px; font-weight: 600; white-space: nowrap; }
-          .gantt-timeline { padding: 8px; border: 1px solid var(--border); position: relative; height: 60px; background: var(--panel-2); }
-          .gantt-bar { position: absolute; height: 40px; top: 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; font-size: 9px; color: white; padding: 0 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+          .gantt-day { margin-bottom: 30px; }
+          .gantt-day-title { font-weight: 600; font-size: 15px; margin-bottom: 16px; padding: 12px; background: var(--panel-2); border-radius: 8px; }
+          .gantt-facility { margin-bottom: 20px; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+          .gantt-facility-name { padding: 12px 16px; background: var(--panel-2); border-bottom: 1px solid var(--border); font-weight: 600; font-size: 13px; }
+          .gantt-sports { display: grid; grid-template-columns: 150px 1fr; }
+          .gantt-sport { display: contents; }
+          .gantt-sport-label { padding: 10px 16px; background: var(--panel); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 600; display: flex; align-items: center; }
+          .gantt-sport-label.swim { color: var(--swim); }
+          .gantt-sport-label.skate { color: var(--skate); }
+          .gantt-sport-label.climb { color: var(--climb); }
+          .gantt-timeline { padding: 10px; border-bottom: 1px solid var(--border); position: relative; height: 50px; background: var(--panel); display: flex; align-items: center; }
+          .gantt-timeline:last-child { border-bottom: none; }
+          .gantt-bar { position: absolute; height: 30px; top: 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; font-size: 10px; color: white; padding: 0 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
           .gantt-bar.swim { background: var(--swim); }
           .gantt-bar.skate { background: var(--skate); }
           .gantt-bar.climb { background: var(--climb); }
-          .gantt-bar.conflict { opacity: 0.7; border: 2px solid var(--conflict); }
-          .gantt-time-labels { display: grid; grid-template-columns: 200px 1fr; gap: 0; }
-          .gantt-time-label { grid-column: 2; display: grid; grid-template-columns: repeat(16, 1fr); border-top: 1px solid var(--border); }
-          .gantt-hour { text-align: center; font-size: 10px; color: var(--muted); padding: 4px 0; border-right: 1px solid var(--border); }
+          .gantt-bar.conflict { border: 2px solid var(--conflict); opacity: 0.9; }
+          .gantt-time-axis { display: grid; grid-template-columns: 150px 1fr; margin-top: 10px; padding: 0 16px; }
+          .gantt-hours { display: grid; grid-template-columns: repeat(16, 1fr); gap: 0; font-size: 10px; color: var(--muted); text-align: center; }
+          .gantt-hour { padding: 4px 0; border-left: 1px solid var(--border); }
           
           footer { padding: 16px 24px; color: var(--muted); font-size: 11.5px; border-top: 1px solid var(--border); }
           body.hide-swim .domain-row.swim { display: none; }
           body.hide-skate .domain-row.skate { display: none; }
           body.hide-climb .domain-row.climb { display: none; }
+          body.hide-swim .gantt-sport-label.swim { display: none; }
+          body.hide-skate .gantt-sport-label.skate { display: none; }
+          body.hide-climb .gantt-sport-label.climb { display: none; }
+          body.hide-swim .gantt-sport-label.swim ~ .gantt-timeline { display: none; }
+          body.hide-skate .gantt-sport-label.skate ~ .gantt-timeline { display: none; }
+          body.hide-climb .gantt-sport-label.climb ~ .gantt-timeline { display: none; }
           </style>
           </head>
           <body>
@@ -221,6 +238,8 @@ jobs:
           </div>
           </header>
           <main>
+          
+          <!-- LIST VIEW -->
           <div id="list-view" class="view active">
           """
           
@@ -237,8 +256,7 @@ jobs:
                   if items:
                       cards = ""
                       for s in items:
-                          conflict_cls = " has-conflict" if s.conflicts else ""
-                          cards += f'<div class="session {domain}{conflict_cls}"><span class="time">{s.start_time} – {s.end_time}</span><span class="name">{html_escape.escape(s.name)}</span><span class="loc">📍 {html_escape.escape(s.location)}</span></div>'
+                          cards += f'<div class="session {domain}"><span class="time">{s.start_time} – {s.end_time}</span><span class="name">{html_escape.escape(s.name)}</span><span class="loc">📍 {html_escape.escape(s.location)}</span></div>'
                   else:
                       cards = '<span class="empty">— no sessions —</span>'
                   
@@ -247,42 +265,53 @@ jobs:
               html += '</section>'
           
           html += """</div>
+          
+          <!-- GANTT VIEW -->
           <div id="gantt-view" class="view">
           """
           
-          # Generate Gantt chart
           for d in sorted(all_sessions.keys()):
               day_obj = datetime.datetime.fromisoformat(d).date()
               day_label = day_obj.strftime("%a, %b %d, %Y")
+              
+              html += f'<div class="gantt-day"><div class="gantt-day-title">{day_label}</div>'
               
               facilities = {}
               for domain in all_sessions[d]:
                   for s in all_sessions[d][domain]:
                       if s.venue not in facilities:
-                          facilities[s.venue] = []
-                      facilities[s.venue].append(s)
-              
-              html += f'<div class="gantt-day"><div class="gantt-title">{day_label}</div><div class="gantt-grid">'
+                          facilities[s.venue] = {}
+                      if domain not in facilities[s.venue]:
+                          facilities[s.venue][domain] = []
+                      facilities[s.venue][domain].append(s)
               
               for venue in sorted(facilities.keys()):
-                  html += f'<div class="gantt-facility-name">{html_escape.escape(venue)}</div>'
-                  html += '<div class="gantt-timeline" style="position: relative; height: 80px;">'
+                  html += f'<div class="gantt-facility"><div class="gantt-facility-name">{html_escape.escape(venue)}</div><div class="gantt-sports">'
                   
-                  for s in facilities[venue]:
-                      start = s.start_min()
-                      end = s.end_min()
-                      width_pct = ((end - start) / (22 * 60)) * 100
-                      left_pct = ((start - (6 * 60)) / (22 * 60)) * 100
-                      conflict_cls = "conflict" if s.conflicts else ""
-                      html += f'<div class="gantt-bar {s.domain} {conflict_cls}" style="left: {left_pct}%; width: {width_pct}%; title=\\"{html_escape.escape(s.name)}\\">{html_escape.escape(s.name)}</div>'
+                  for domain in ["swim", "skate", "climb"]:
+                      html += f'<div class="gantt-sport-label {domain}">{CATEGORIES[domain]["label"]}</div>'
+                      sessions = facilities[venue].get(domain, [])
+                      if sessions:
+                          html += '<div class="gantt-timeline">'
+                          for s in sessions:
+                              start = s.start_min()
+                              end = s.end_min()
+                              width_pct = ((end - start) / (16 * 60)) * 100
+                              left_pct = ((start - (6 * 60)) / (16 * 60)) * 100
+                              conflict_cls = "conflict" if s.conflicts else ""
+                              title = html_escape.escape(s.name)
+                              html += f'<div class="gantt-bar {domain} {conflict_cls}" style="left: {left_pct}%; width: {width_pct}%;" title="{title}">{title}</div>'
+                          html += '</div>'
+                      else:
+                          html += '<div class="gantt-timeline"></div>'
                   
-                  html += '</div>'
+                  html += '</div></div>'
               
-              html += """</div></div>"""
+              html += '</div>'
           
           html += """</div>
           </main>
-          <footer>Toggle between List and Gantt views. Click activity buttons to filter.</footer>
+          <footer>Toggle between List and Gantt views. ⚠️ Red borders = cross-sport conflicts within ±30 min at same facility.</footer>
           <script>
           document.querySelectorAll('[data-view]').forEach(function(btn) {
               btn.onclick = function() {
@@ -306,7 +335,7 @@ jobs:
           
           with open('docs/index.html', 'w', encoding='utf-8') as f:
               f.write(html)
-          print(f"Schedule rendered: {len(all_sessions)} days with Gantt charts")
+          print(f"Schedule rendered: {len(all_sessions)} days")
           PYSCRIPT
 
       - name: Commit and push
@@ -314,5 +343,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/index.html
-          git commit -m "chore: refresh drop-in schedule with gantt charts" || true
+          git commit -m "chore: refresh drop-in schedule" || true
           git push origin main || true
