@@ -1,22 +1,20 @@
 name: Refresh Schedule
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '5 13 * * *'
-  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: write
+    timeout-minutes: 5
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -24,18 +22,90 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install -q requests beautifulsoup4 lxml
+        run: pip install -q requests beautifulsoup4
 
-      - name: Create docs directory
-        run: mkdir -p docs
+      - name: Fetch and render schedule
+        run: |
+          mkdir -p docs
+          python3 << 'PYSCRIPT'
+          import requests
+          from bs4 import BeautifulSoup
+          import datetime
+          
+          BASE_URL = "https://looknbook.reddeer.ca/RedDeer/public/Category/ClassList"
+          GUIDS = {
+              "swim": "09d0604f-a42d-43a3-a93c-64a93ebda20c",
+              "skate": "6f659e94-7b6a-4042-8c63-fbeba072256d",
+              "climb": "654b289b-816d-443f-a84f-8f0cae322e54"
+          }
+          
+          sessions = {}
+          for domain, guid in GUIDS.items():
+              for i in range(14):
+                  d = (datetime.date.today() + datetime.timedelta(days=i)).isoformat()
+                  url = f"{BASE_URL}?CategoryGUID={guid}&StartDate={d}&Participant=00000000-0000-0000-0000-000000000000"
+                  try:
+                      r = requests.get(url, timeout=10)
+                      soup = BeautifulSoup(r.text, 'html.parser')
+                      table = soup.find('table')
+                      if table:
+                          for tr in table.find_all('tr')[1:]:
+                              cells = tr.find_all('td')
+                              if len(cells) >= 7:
+                                  time = cells[0].text.strip()
+                                  name = cells[1].text.strip()
+                                  loc = cells[3].text.strip()
+                                  if domain == "swim" and not any(k in name.lower() for k in ["lane", "public", "adult"]):
+                                      continue
+                                  if d not in sessions:
+                                      sessions[d] = {}
+                                  if domain not in sessions[d]:
+                                      sessions[d][domain] = []
+                                  sessions[d][domain].append({"time": time, "name": name, "loc": loc})
+                  except Exception as e:
+                      print(f"[warn] {domain} {d}: {e}")
+          
+          # Generate HTML
+          html = """<!doctype html>
+          <html>
+          <head>
+          <meta charset=utf-8>
+          <title>Red Deer Schedule</title>
+          <style>
+          body { font-family: system-ui; background: #0f172a; color: #e2e8f0; margin: 0; padding: 20px; }
+          h1 { margin-top: 0; }
+          .day { background: #1e293b; margin: 20px 0; padding: 20px; border-radius: 8px; }
+          .activity { margin: 15px 0; }
+          .session { background: #0b1222; padding: 10px; margin: 8px 0; border-left: 3px solid #38bdf8; border-radius: 4px; }
+          .time { font-weight: bold; }
+          .loc { color: #94a3b8; font-size: 0.9em; }
+          </style>
+          </head>
+          <body>
+          <h1>Red Deer Drop-In Schedule</h1>
+          <p>Last updated: """ + datetime.datetime.now().strftime("%Y-%m-%d %H:%M") + """</p>
+          """
+          
+          for d in sorted(sessions.keys()):
+              html += f'<div class="day"><h2>{d}</h2>'
+              for domain in ["swim", "skate", "climb"]:
+                  if domain in sessions[d]:
+                      html += f'<div class="activity"><strong>{domain.title()}</strong>'
+                      for s in sessions[d][domain]:
+                          html += f'<div class="session"><div class="time">{s["time"]}</div><div>{s["name"]}</div><div class="loc">{s["loc"]}</div></div>'
+                      html += '</div>'
+              html += '</div>'
+          
+          html += '</body></html>'
+          with open('docs/index.html', 'w') as f:
+              f.write(html)
+          print("Schedule rendered")
+          PYSCRIPT
 
-      - name: Scrape and render schedule
-        run: python scripts/sync.py --out docs/index.html
-
-      - name: Push changes
+      - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/index.html
-          git commit -m "chore: refresh schedule" || echo "No changes to commit"
+          git commit -m "chore: refresh schedule" || true
           git push origin main || true
