@@ -1,27 +1,9 @@
 name: Refresh Schedule
 
-# -----------------------------------------------------------------------------
-# Scrapes Red Deer looknbook daily and commits public/index.html.
-# Firebase Hosting's GitHub integration (hosting.app.github) auto-deploys
-# on every push to main that changes public/.
-#
-# Schedule note: GitHub Actions cron runs in UTC ONLY.
-#   13:05 UTC = 07:05 MDT (Mar–Nov) / 06:05 MST (Nov–Mar).
-#   We accept 1-hour drift in winter rather than maintaining two cron entries.
-# -----------------------------------------------------------------------------
-
 on:
   schedule:
-    - cron: '5 13 * * *'   # 07:05 MDT / 06:05 MST
-  workflow_dispatch:       # lets you trigger manually from the Actions tab
-
-# Grant the built-in GITHUB_TOKEN write access so we can push the updated HTML.
-permissions:
-  contents: write
-
-concurrency:
-  group: refresh-schedule
-  cancel-in-progress: false
+    - cron: '5 13 * * *'
+  workflow_dispatch:
 
 jobs:
   refresh:
@@ -42,19 +24,14 @@ jobs:
         run: pip install requests beautifulsoup4 lxml
 
       - name: Scrape and render schedule
-        run: python scripts/sync.py
-        # sync.py writes to public/index.html by default when GITHUB_ACTIONS=true
+        run: |
+          mkdir -p docs
+          python scripts/sync.py --out docs/index.html
 
-      - name: Commit changes if schedule updated
+      - name: Commit and push changes
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          if [[ -z "$(git status --porcelain public/index.html)" ]]; then
-            echo "No schedule changes — nothing to commit."
-            exit 0
-          fi
-
-          git add public/index.html
-          git commit -m "chore: refresh drop-in schedule [skip ci]" || true
-          git push origin main --force-with-lease || git pull origin main && git push origin main
+          
+          git add docs/index.html
+          git diff --cached --exit-code || (git commit -m "chore: refresh drop-in schedule" && git push origin main)
