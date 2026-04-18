@@ -252,21 +252,22 @@ jobs:
           html += """</main>
           <footer>Auto-refreshed via GitHub Actions. Click activity buttons to filter. ⚠️ = conflicts within 30 min travel time between facilities.</footer>
           <script>
-          document.querySelectorAll('.chip[data-toggle]').forEach(btn => {
-              btn.addEventListener('click', () => {
-                  const key = btn.dataset.toggle;
-                  btn.classList.toggle('active');
-                  document.body.classList.toggle('hide-' + key, !btn.classList.contains('active'));
-              });
-          });
-          const conflictBtn = document.querySelector('[data-conflicts-only]');
-          if (conflictBtn) {
-              conflictBtn.addEventListener('click', () => {
-                  conflictBtn.classList.toggle('active');
+          <script>
+          document.querySelectorAll('.chip').forEach(btn => {
+              btn.addEventListener('click', function() {
+              const toggle = this.getAttribute('data-toggle');
+              const conflicts = this.getAttribute('data-conflicts-only');
+        
+                if (toggle) {
+                    this.classList.toggle('active');
+                    document.body.classList.toggle('hide-' + toggle);
+                  } else if (conflicts !== null) {
+                this.classList.toggle('active');
                   document.body.classList.toggle('only-conflicts');
-              });
-          }
-          </script>
+              }
+                });
+                      });
+                  </script>
           </body>
           </html>"""
           
