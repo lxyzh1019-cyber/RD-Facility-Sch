@@ -22,7 +22,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install -q requests beautifulsoup4
+        run: pip install -q requests beautifulsoup4 lxml
 
       - name: Fetch and render schedule
         run: |
@@ -41,11 +41,11 @@ jobs:
           
           sessions = {}
           for domain, guid in GUIDS.items():
-              for i in range(14):
+              for i in range(7):
                   d = (datetime.date.today() + datetime.timedelta(days=i)).isoformat()
                   url = f"{BASE_URL}?CategoryGUID={guid}&StartDate={d}&Participant=00000000-0000-0000-0000-000000000000"
                   try:
-                      r = requests.get(url, timeout=10)
+                      r = requests.get(url, timeout=30)
                       soup = BeautifulSoup(r.text, 'html.parser')
                       table = soup.find('table')
                       if table:
