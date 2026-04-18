@@ -45,7 +45,7 @@ jobs:
         run: python scripts/sync.py
         # sync.py writes to public/index.html by default when GITHUB_ACTIONS=true
 
-      - name: Commit changes if schedule updated
+- name: Commit changes if schedule updated
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -55,7 +55,6 @@ jobs:
             exit 0
           fi
 
-          git pull origin main --no-edit
           git add public/index.html
-          git commit -m "chore: refresh drop-in schedule [skip ci]"
-          git push origin main
+          git commit -m "chore: refresh drop-in schedule [skip ci]" || true
+          git push origin main --force-with-lease || git pull origin main && git push origin main
