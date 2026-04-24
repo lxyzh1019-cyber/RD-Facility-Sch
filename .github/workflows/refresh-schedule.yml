@@ -369,6 +369,7 @@ jobs:
             --accent: #38bdf8;
             --swim: #2563eb; --skate: #0891b2; --climb: #ca8a04;
             --conflict: #ef4444; --warn: #f59e0b; --fresh: #22c55e;
+            --fac-CC: #a855f7; --fac-RC: #34d399; --fac-MC: #fb7185; --fac-DC: #fb923c; --fac-SA: #818cf8; --fac-unknown: #64748b;
           }
           * { box-sizing: border-box; }
           html, body { margin: 0; padding: 0; }
@@ -380,6 +381,8 @@ jobs:
           .chip.active { background: var(--accent); color: #0b1222; border-color: var(--accent); }
           .chip.refresh { background: var(--fresh); color: #0b1222; border-color: var(--fresh); font-weight: 700; }
           .chip.refresh:hover { background: #16a34a; }
+          .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+          #gantt-facility-select { padding: 8px 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--panel-2); color: var(--text); font-size: 13px; font-weight: 500; cursor: pointer; max-width: 200px; }
           
           .banner { background: rgba(245,158,11,0.15); border-bottom: 1px solid var(--warn); color: var(--warn); padding: 10px 20px; font-size: 13px; font-weight: 500; text-align: center; }
           
@@ -426,11 +429,27 @@ jobs:
           .time-cell { background: var(--panel-3); border-bottom: 2px solid var(--border-strong); border-right: 1px solid var(--border); padding: 8px 0; text-align: center; font-size: 12px; font-weight: 700; color: var(--muted); }
           .time-cell.corner { border-right: 2px solid var(--border-strong); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
           
-          .facility-label { background: var(--panel-2); border-right: 2px solid var(--border-strong); border-bottom: 3px solid var(--border-strong); padding: 0 12px; display: flex; gap: 8px; align-items: center; justify-content: flex-start; }
-          .facility-label .code { flex-shrink: 0; background: var(--accent); color: #0b1222; padding: 3px 7px; border-radius: 4px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; min-width: 32px; text-align: center; }
+          .facility-label { background: var(--panel-2); border-right: 2px solid var(--border-strong); border-bottom: 3px solid var(--border-strong); padding: 0 12px; display: flex; gap: 8px; align-items: center; justify-content: flex-start; border-left: 3px solid var(--fac-unknown); }
+          .facility-label .code { flex-shrink: 0; background: var(--fac-unknown); color: #0b1222; padding: 3px 7px; border-radius: 4px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; min-width: 32px; text-align: center; }
           .facility-label .name { font-size: 12px; color: var(--text); line-height: 1.3; font-weight: 500; }
+          .facility-label[data-facility="CC"] { border-left-color: var(--fac-CC); }
+          .facility-label[data-facility="CC"] .code { background: var(--fac-CC); }
+          .facility-label[data-facility="RC"] { border-left-color: var(--fac-RC); }
+          .facility-label[data-facility="RC"] .code { background: var(--fac-RC); }
+          .facility-label[data-facility="MC"] { border-left-color: var(--fac-MC); }
+          .facility-label[data-facility="MC"] .code { background: var(--fac-MC); }
+          .facility-label[data-facility="DC"] { border-left-color: var(--fac-DC); }
+          .facility-label[data-facility="DC"] .code { background: var(--fac-DC); }
+          .facility-label[data-facility="SA"] { border-left-color: var(--fac-SA); }
+          .facility-label[data-facility="SA"] .code { background: var(--fac-SA); }
           
           .bars-row { position: relative; height: 48px; background-color: var(--panel); background-image: repeating-linear-gradient(to right, transparent 0, transparent 69px, var(--border) 69px, var(--border) 70px); display: flex; align-items: center; }
+          .bars-row[data-facility="CC"] { background-image: linear-gradient(to right, color-mix(in srgb, var(--fac-CC) 14%, transparent), color-mix(in srgb, var(--fac-CC) 14%, transparent)), repeating-linear-gradient(to right, transparent 0, transparent 69px, var(--border) 69px, var(--border) 70px); }
+          .bars-row[data-facility="RC"] { background-image: linear-gradient(to right, color-mix(in srgb, var(--fac-RC) 14%, transparent), color-mix(in srgb, var(--fac-RC) 14%, transparent)), repeating-linear-gradient(to right, transparent 0, transparent 69px, var(--border) 69px, var(--border) 70px); }
+          .bars-row[data-facility="MC"] { background-image: linear-gradient(to right, color-mix(in srgb, var(--fac-MC) 14%, transparent), color-mix(in srgb, var(--fac-MC) 14%, transparent)), repeating-linear-gradient(to right, transparent 0, transparent 69px, var(--border) 69px, var(--border) 70px); }
+          .bars-row[data-facility="DC"] { background-image: linear-gradient(to right, color-mix(in srgb, var(--fac-DC) 14%, transparent), color-mix(in srgb, var(--fac-DC) 14%, transparent)), repeating-linear-gradient(to right, transparent 0, transparent 69px, var(--border) 69px, var(--border) 70px); }
+          .bars-row[data-facility="SA"] { background-image: linear-gradient(to right, color-mix(in srgb, var(--fac-SA) 14%, transparent), color-mix(in srgb, var(--fac-SA) 14%, transparent)), repeating-linear-gradient(to right, transparent 0, transparent 69px, var(--border) 69px, var(--border) 70px); }
+          .bars-row[data-facility]:not([data-facility="CC"]):not([data-facility="RC"]):not([data-facility="MC"]):not([data-facility="DC"]):not([data-facility="SA"]) { background-image: linear-gradient(to right, color-mix(in srgb, var(--fac-unknown) 14%, transparent), color-mix(in srgb, var(--fac-unknown) 14%, transparent)), repeating-linear-gradient(to right, transparent 0, transparent 69px, var(--border) 69px, var(--border) 70px); }
           .bars-row.facility-last { border-bottom: 3px solid var(--border-strong); }
           .bars-row.sub-2 { height: 80px; }
           .bars-row.sub-3 { height: 112px; }
@@ -440,7 +459,7 @@ jobs:
           .bar.swim { background: var(--swim); }
           .bar.skate { background: var(--skate); }
           .bar.climb { background: var(--climb); }
-          .bar.conflict { border-color: var(--conflict); box-shadow: 0 0 0 2px rgba(239,68,68,0.4); }
+          .bar.conflict { border-color: var(--conflict) !important; box-shadow: 0 0 0 2px rgba(239,68,68,0.55); }
           
           .bar .emoji { font-size: 14px; }
           .bar .bar-time { font-size: 11px; opacity: 0.9; font-weight: 600; }
@@ -471,6 +490,17 @@ jobs:
           body.hide-swim .bar.swim, body.hide-swim .domain-row.swim { display: none; }
           body.hide-skate .bar.skate, body.hide-skate .domain-row.skate { display: none; }
           body.hide-climb .bar.climb, body.hide-climb .domain-row.climb { display: none; }
+          
+          body[data-gantt-fac="CC"] #gantt-view .facility-label:not([data-facility="CC"]),
+          body[data-gantt-fac="CC"] #gantt-view .bars-row:not([data-facility="CC"]) { display: none !important; }
+          body[data-gantt-fac="RC"] #gantt-view .facility-label:not([data-facility="RC"]),
+          body[data-gantt-fac="RC"] #gantt-view .bars-row:not([data-facility="RC"]) { display: none !important; }
+          body[data-gantt-fac="MC"] #gantt-view .facility-label:not([data-facility="MC"]),
+          body[data-gantt-fac="MC"] #gantt-view .bars-row:not([data-facility="MC"]) { display: none !important; }
+          body[data-gantt-fac="DC"] #gantt-view .facility-label:not([data-facility="DC"]),
+          body[data-gantt-fac="DC"] #gantt-view .bars-row:not([data-facility="DC"]) { display: none !important; }
+          body[data-gantt-fac="SA"] #gantt-view .facility-label:not([data-facility="SA"]),
+          body[data-gantt-fac="SA"] #gantt-view .bars-row:not([data-facility="SA"]) { display: none !important; }
           </style>
           </head>
           <body>
@@ -483,6 +513,15 @@ jobs:
           <a class="chip refresh" href="''' + GITHUB_REPO_URL + '''/actions/workflows/refresh-schedule.yml" target="_blank" title="Opens GitHub Actions - click Run workflow">🔄 Refresh</a>
           <button class="chip active" data-view="list">📋 List</button>
           <button class="chip" data-view="gantt">📊 Gantt</button>
+          <label class="sr-only" for="gantt-facility-select">Facility (Gantt)</label>
+          <select id="gantt-facility-select" title="Show one facility in Gantt view" aria-label="Filter Gantt by facility">
+          <option value="all" selected>All facilities</option>
+          <option value="CC">Collicutt (CC)</option>
+          <option value="RC">Don Moore (RC)</option>
+          <option value="MC">Michener (MC)</option>
+          <option value="DC">G.H. Dawe (DC)</option>
+          <option value="SA">Servus Arena (SA)</option>
+          </select>
           <button class="chip active" data-toggle="swim">🏊 Swim</button>
           <button class="chip active" data-toggle="skate">⛸️ Skate</button>
           <button class="chip active" data-toggle="climb">🧗 Climb</button>
@@ -585,7 +624,7 @@ jobs:
                       sport_list = [sp for sp in ["swim", "skate", "climb"] if sp in fg["sports"]]
                       num_sports = len(sport_list)
                       
-                      html += f'<div class="facility-label" style="grid-row: span {num_sports};"><span class="code">{code}</span><span class="name">{fg["name"]}</span></div>'
+                      html += f'<div class="facility-label" data-facility="{code}" style="grid-row: span {num_sports};"><span class="code">{code}</span><span class="name">{fg["name"]}</span></div>'
                       
                       for idx, sport in enumerate(sport_list):
                           sessions = fg["sports"][sport]
@@ -598,7 +637,7 @@ jobs:
                           if num_sub_rows == 2: sub_cls = " sub-2"
                           elif num_sub_rows >= 3: sub_cls = " sub-3"
                           
-                          html += f'<div class="bars-row{sub_cls}{last_cls}" style="grid-column: 2 / span 16;">'
+                          html += f'<div class="bars-row{sub_cls}{last_cls}" data-facility="{code}" style="grid-column: 2 / span 16;">'
                           
                           loc_to_row = {loc: i for i, loc in enumerate(unique_locations)}
                           
@@ -677,6 +716,18 @@ jobs:
               document.getElementById(view + '-view').classList.add('active');
             };
           });
+          
+          (function() {
+            var facSel = document.getElementById('gantt-facility-select');
+            if (!facSel) return;
+            function applyGanttFacilityFilter() {
+              var v = facSel.value;
+              if (v === 'all') document.body.removeAttribute('data-gantt-fac');
+              else document.body.setAttribute('data-gantt-fac', v);
+            }
+            facSel.addEventListener('change', applyGanttFacilityFilter);
+            applyGanttFacilityFilter();
+          })();
           
           document.querySelectorAll('[data-toggle]').forEach(function(btn) {
             btn.onclick = function() {
