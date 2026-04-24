@@ -29,7 +29,6 @@ import os
 import re
 import sys
 from dataclasses import dataclass, field
-from typing import Iterable
 from zoneinfo import ZoneInfo
 
 import requests
@@ -63,13 +62,6 @@ CATEGORIES: dict[str, dict[str, str]] = {
         "color": "#ca8a04",
     },
 }
-
-SWIM_KEEP_KEYWORDS = (
-    "lane swimming",
-    "public swimming",
-    "public & lane",
-    "adult & child swimming",
-)
 
 # Conflict detector tuning
 CONFLICT_GAP_MIN = 30            # ± minutes
@@ -200,7 +192,7 @@ def parse_sessions(
         dur_m = re.search(r"(\d+)\s*mins?", parts[1], re.IGNORECASE)
         duration = int(dur_m.group(1)) if dur_m else _minutes_between(start, end)
 
-        if domain == "swim" and not _name_matches(class_name, SWIM_KEEP_KEYWORDS):
+        if domain == "swim" and "swim" not in class_name.lower():
             continue
 
         sessions.append(Session(
@@ -218,11 +210,6 @@ def _minutes_between(start: dt.time, end: dt.time) -> int:
     if e < s:
         e += 24 * 60
     return e - s
-
-
-def _name_matches(name: str, keywords: Iterable[str]) -> bool:
-    low = name.lower()
-    return any(k in low for k in keywords)
 
 
 def scrape_all(days: int, start_date: dt.date) -> list[Session]:

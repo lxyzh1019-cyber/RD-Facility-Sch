@@ -58,8 +58,6 @@ jobs:
               "G.H. Dawe Community Centre": ("DC", "G.H. Dawe<br>Community"),
               "Servus Arena": ("SA", "Servus<br>Arena"),
           }
-          SWIM_KEYWORDS = ("lane swimming", "public swimming", "public & lane", "adult & child swimming")
-          
           # Fail-safe thresholds
           MAX_TOTAL_SECONDS = 300  # 5 minutes
           MAX_CONSECUTIVE_FAILURES = 5
@@ -220,7 +218,7 @@ jobs:
                                   location = cells[3].text.strip()
                                   venue = cells[4].text.strip()
                                   spaces = cells[5].text.strip()
-                                  if domain == "swim" and not any(k in name.lower() for k in SWIM_KEYWORDS):
+                                  if domain == "swim" and "swim" not in name.lower():
                                       continue
                                   fresh_days[d].append(make_session(d, domain, name, time_raw, location, venue, spaces))
                           success = True
