@@ -67,6 +67,14 @@ CATEGORIES: dict[str, dict[str, str]] = {
 CONFLICT_GAP_MIN = 30            # ± minutes
 CONFLICT_CROSS_DOMAIN_ONLY = True  # same-domain pairs aren't 'conflicts'
 
+FACILITY_CODES: dict[str, tuple[str, str]] = {
+    "Collicutt Centre": ("CC", "Collicutt"),
+    "Don Moore Recreation Centre": ("RC", "Don Moore"),
+    "Michener Aquatic Centre": ("MC", "Michener"),
+    "G.H. Dawe Community Centre": ("DC", "G.H. Dawe"),
+    "Servus Arena": ("SA", "Servus"),
+}
+
 HTTP_TIMEOUT = 30
 HTTP_MAX_WORKERS = 6
 USER_AGENT = "RD-DropIn-Aggregator/1.1 (personal use; single user)"
@@ -306,6 +314,20 @@ def _short_loc(location: str, venue: str) -> str:
     return location if location and location != venue else v
 
 
+def get_facility_code(venue: str) -> tuple[str, str, str]:
+    clean = re.sub(r"^(Leisure Centres|Arenas)\s*-\s*", "", venue).strip()
+    clean = re.sub(r"G\.H\.?\s*Dawe", "G.H. Dawe", clean, flags=re.I)
+    for key, (code, name) in FACILITY_CODES.items():
+        if key in clean:
+            return code, name, clean
+    words = clean.split()
+    if len(words) >= 2:
+        code = (words[0][0] + words[1][0]).upper()
+    else:
+        code = (clean[:2] or "XX").upper()
+    return code, clean, clean
+
+
 # ---------------------------------------------------------------------------
 # HTML rendering
 # ---------------------------------------------------------------------------
@@ -323,6 +345,7 @@ PAGE_TEMPLATE = """<!doctype html>
     --accent: #38bdf8;
     --swim:  #2563eb; --skate: #0891b2; --climb: #ca8a04;
     --today: #22c55e; --warn: #f59e0b; --conflict: #ef4444;
+    --fac-CC: #a855f7; --fac-RC: #34d399; --fac-MC: #fb7185; --fac-DC: #fb923c; --fac-SA: #818cf8; --fac-unknown: #64748b;
   }}
   * {{ box-sizing: border-box; }}
   body {{
@@ -338,7 +361,9 @@ PAGE_TEMPLATE = """<!doctype html>
   }}
   header h1 {{ margin: 0; font-size: 18px; letter-spacing: 0.3px; }}
   header .meta {{ color: var(--muted); font-size: 13px; }}
-  header .controls {{ display: flex; gap: 8px; flex-wrap: wrap; }}
+  header .controls {{ display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }}
+  .sr-only {{ position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }}
+  #list-facility-select {{ padding: 6px 10px; border-radius: 999px; border: 1px solid var(--border); background: var(--panel-2); color: var(--text); font-size: 12px; cursor: pointer; max-width: 180px; }}
   .chip {{
     padding: 6px 12px; border-radius: 999px;
     border: 1px solid var(--border); background: var(--panel-2);
@@ -384,20 +409,24 @@ PAGE_TEMPLATE = """<!doctype html>
     padding: 10px; display: flex; flex-wrap: wrap; gap: 8px;
     min-height: 48px; align-items: flex-start;
   }}
-  .session {{
+  #list-view .session {{
     display: flex; flex-direction: column; gap: 2px;
     padding: 8px 10px; border-radius: 6px;
     background: var(--panel-2); border: 1px solid var(--border);
-    border-left-width: 3px; font-size: 12.5px;
+    border-left-width: 4px; border-left-color: var(--fac-unknown); font-size: 12.5px;
     min-width: 220px; max-width: 320px;
     text-decoration: none; color: inherit;
     transition: transform 120ms ease, border-color 120ms ease;
     position: relative;
   }}
-  .session:hover {{ transform: translateY(-1px); border-color: var(--accent); }}
-  .session.swim  {{ border-left-color: var(--swim); }}
-  .session.skate {{ border-left-color: var(--skate); }}
-  .session.climb {{ border-left-color: var(--climb); }}
+  #list-view .session[data-facility="CC"] {{ border-left-color: var(--fac-CC); }}
+  #list-view .session[data-facility="RC"] {{ border-left-color: var(--fac-RC); }}
+  #list-view .session[data-facility="MC"] {{ border-left-color: var(--fac-MC); }}
+  #list-view .session[data-facility="DC"] {{ border-left-color: var(--fac-DC); }}
+  #list-view .session[data-facility="SA"] {{ border-left-color: var(--fac-SA); }}
+  #list-view .domain-row.row-empty .sessions {{ display: none; }}
+  #list-view .domain-row.row-empty .domain-label {{ opacity: 0.45; }}
+  #list-view .session:hover {{ transform: translateY(-1px); border-color: var(--accent); }}
   .session .time {{ font-weight: 600; }}
   .session .name {{ color: var(--muted); font-size: 11.5px; }}
   .session .loc  {{ color: var(--text); font-size: 11.5px; opacity: 0.85; }}
@@ -431,6 +460,11 @@ PAGE_TEMPLATE = """<!doctype html>
   body.hide-skate .domain-row.skate {{ display: none; }}
   body.hide-climb .domain-row.climb {{ display: none; }}
   body.only-conflicts .session:not(.has-conflict) {{ display: none; }}
+  body[data-list-fac="CC"] #list-view .session:not([data-facility="CC"]) {{ display: none !important; }}
+  body[data-list-fac="RC"] #list-view .session:not([data-facility="RC"]) {{ display: none !important; }}
+  body[data-list-fac="MC"] #list-view .session:not([data-facility="MC"]) {{ display: none !important; }}
+  body[data-list-fac="DC"] #list-view .session:not([data-facility="DC"]) {{ display: none !important; }}
+  body[data-list-fac="SA"] #list-view .session:not([data-facility="SA"]) {{ display: none !important; }}
 </style>
 </head>
 <body>
@@ -448,6 +482,15 @@ PAGE_TEMPLATE = """<!doctype html>
       <span><span class="sw" style="background:var(--skate)"></span>Skate</span>
       <span><span class="sw" style="background:var(--climb)"></span>Climb</span>
     </span>
+    <label class="sr-only" for="list-facility-select">Facility</label>
+    <select id="list-facility-select" title="Filter by facility" aria-label="Filter by facility">
+      <option value="all" selected>All facilities</option>
+      <option value="CC">Collicutt (CC)</option>
+      <option value="RC">Don Moore (RC)</option>
+      <option value="MC">Michener (MC)</option>
+      <option value="DC">G.H. Dawe (DC)</option>
+      <option value="SA">Servus Arena (SA)</option>
+    </select>
     <button class="chip active" data-toggle="swim">Swim</button>
     <button class="chip active" data-toggle="skate">Skate</button>
     <button class="chip active" data-toggle="climb">Climb</button>
@@ -456,7 +499,9 @@ PAGE_TEMPLATE = """<!doctype html>
 </header>
 
 <main>
+<div id="list-view">
 {body}
+</div>
 </main>
 
 <footer>
@@ -467,11 +512,32 @@ PAGE_TEMPLATE = """<!doctype html>
 </footer>
 
 <script>
+  function updateListDomainRows() {{
+    document.querySelectorAll('#list-view .domain-row').forEach(row => {{
+      let n = 0;
+      row.querySelectorAll('.session').forEach(el => {{
+        if (window.getComputedStyle(el).display !== 'none') n++;
+      }});
+      row.classList.toggle('row-empty', n === 0);
+    }});
+  }}
+  const listFacSel = document.getElementById('list-facility-select');
+  if (listFacSel) {{
+    function applyListFacilityFilter() {{
+      const v = listFacSel.value;
+      if (v === 'all') document.body.removeAttribute('data-list-fac');
+      else document.body.setAttribute('data-list-fac', v);
+      updateListDomainRows();
+    }}
+    listFacSel.addEventListener('change', applyListFacilityFilter);
+    applyListFacilityFilter();
+  }}
   document.querySelectorAll('.chip[data-toggle]').forEach(btn => {{
     btn.addEventListener('click', () => {{
       const key = btn.dataset.toggle;
       btn.classList.toggle('active');
       document.body.classList.toggle('hide-' + key, !btn.classList.contains('active'));
+      updateListDomainRows();
     }});
   }});
   const conflictBtn = document.querySelector('[data-conflicts-only]');
@@ -479,6 +545,7 @@ PAGE_TEMPLATE = """<!doctype html>
     conflictBtn.addEventListener('click', () => {{
       conflictBtn.classList.toggle('active');
       document.body.classList.toggle('only-conflicts');
+      updateListDomainRows();
     }});
   }}
 </script>
@@ -546,6 +613,7 @@ def render_html(sessions: list[Session], start_date: dt.date, days: int) -> str:
 
 def _render_session_card(s: Session) -> str:
     display_loc = _short_loc(s.location, s.venue)
+    fac_code, _, _ = get_facility_code(s.venue)
     conflict_cls = " has-conflict" if s.conflicts else ""
 
     badge = ""
@@ -573,6 +641,7 @@ def _render_session_card(s: Session) -> str:
 
     return (
         f'<a class="session {html.escape(s.activity_domain)}{conflict_cls}" '
+        f'data-facility="{html.escape(fac_code)}" '
         f'href="{html.escape(s.source_url)}" target="_blank" rel="noopener">'
         f'  <span class="time">{html.escape(s.time_label)}</span>'
         f'  <span class="name">{html.escape(s.class_name)}</span>'

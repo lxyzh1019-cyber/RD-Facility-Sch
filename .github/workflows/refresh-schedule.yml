@@ -85,6 +85,7 @@ jobs:
           # =====================================================
           def get_facility_code(venue):
               clean = re.sub(r'^(Leisure Centres|Arenas)\s*-\s*', '', venue).strip()
+              clean = re.sub(r'G\.H\.?\s*Dawe', 'G.H. Dawe', clean, flags=re.I)
               for key, (code, name) in FACILITY_CODES.items():
                   if key in clean:
                       return code, name, clean
@@ -382,7 +383,7 @@ jobs:
           .chip.refresh { background: var(--fresh); color: #0b1222; border-color: var(--fresh); font-weight: 700; }
           .chip.refresh:hover { background: #16a34a; }
           .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-          #gantt-facility-select { padding: 8px 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--panel-2); color: var(--text); font-size: 13px; font-weight: 500; cursor: pointer; max-width: 200px; }
+          #list-facility-select { padding: 8px 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--panel-2); color: var(--text); font-size: 13px; font-weight: 500; cursor: pointer; max-width: 200px; }
           
           .banner { background: rgba(245,158,11,0.15); border-bottom: 1px solid var(--warn); color: var(--warn); padding: 10px 20px; font-size: 13px; font-weight: 500; text-align: center; }
           
@@ -407,10 +408,14 @@ jobs:
           .domain-label.skate { border-left: 3px solid var(--skate); }
           .domain-label.climb { border-left: 3px solid var(--climb); }
           .sessions-flex { padding: 10px; display: flex; flex-wrap: wrap; gap: 8px; min-height: 48px; align-items: flex-start; }
-          .session { display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border-radius: 6px; background: var(--panel-2); border: 1px solid var(--border); border-left-width: 3px; font-size: 12.5px; min-width: 220px; max-width: 320px; }
-          .session.swim { border-left-color: var(--swim); }
-          .session.skate { border-left-color: var(--skate); }
-          .session.climb { border-left-color: var(--climb); }
+          #list-view .session { display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border-radius: 6px; background: var(--panel-2); border: 1px solid var(--border); border-left-width: 4px; border-left-color: var(--fac-unknown); font-size: 12.5px; min-width: 220px; max-width: 320px; }
+          #list-view .session[data-facility="CC"] { border-left-color: var(--fac-CC); }
+          #list-view .session[data-facility="RC"] { border-left-color: var(--fac-RC); }
+          #list-view .session[data-facility="MC"] { border-left-color: var(--fac-MC); }
+          #list-view .session[data-facility="DC"] { border-left-color: var(--fac-DC); }
+          #list-view .session[data-facility="SA"] { border-left-color: var(--fac-SA); }
+          #list-view .domain-row.row-empty .sessions-flex { display: none; }
+          #list-view .domain-row.row-empty .domain-label { opacity: 0.45; }
           .session .time { font-weight: 600; }
           .session .name { color: var(--muted); font-size: 11.5px; }
           .session .loc { color: var(--text); font-size: 11.5px; opacity: 0.85; }
@@ -429,27 +434,11 @@ jobs:
           .time-cell { background: var(--panel-3); border-bottom: 2px solid var(--border-strong); border-right: 1px solid var(--border); padding: 8px 0; text-align: center; font-size: 12px; font-weight: 700; color: var(--muted); }
           .time-cell.corner { border-right: 2px solid var(--border-strong); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
           
-          .facility-label { background: var(--panel-2); border-right: 2px solid var(--border-strong); border-bottom: 3px solid var(--border-strong); padding: 0 12px; display: flex; gap: 8px; align-items: center; justify-content: flex-start; border-left: 3px solid var(--fac-unknown); }
-          .facility-label .code { flex-shrink: 0; background: var(--fac-unknown); color: #0b1222; padding: 3px 7px; border-radius: 4px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; min-width: 32px; text-align: center; }
+          .facility-label { background: var(--panel-2); border-right: 2px solid var(--border-strong); border-bottom: 3px solid var(--border-strong); padding: 0 12px; display: flex; gap: 8px; align-items: center; justify-content: flex-start; }
+          .facility-label .code { flex-shrink: 0; background: var(--accent); color: #0b1222; padding: 3px 7px; border-radius: 4px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; min-width: 32px; text-align: center; }
           .facility-label .name { font-size: 12px; color: var(--text); line-height: 1.3; font-weight: 500; }
-          .facility-label[data-facility="CC"] { border-left-color: var(--fac-CC); }
-          .facility-label[data-facility="CC"] .code { background: var(--fac-CC); }
-          .facility-label[data-facility="RC"] { border-left-color: var(--fac-RC); }
-          .facility-label[data-facility="RC"] .code { background: var(--fac-RC); }
-          .facility-label[data-facility="MC"] { border-left-color: var(--fac-MC); }
-          .facility-label[data-facility="MC"] .code { background: var(--fac-MC); }
-          .facility-label[data-facility="DC"] { border-left-color: var(--fac-DC); }
-          .facility-label[data-facility="DC"] .code { background: var(--fac-DC); }
-          .facility-label[data-facility="SA"] { border-left-color: var(--fac-SA); }
-          .facility-label[data-facility="SA"] .code { background: var(--fac-SA); }
           
           .bars-row { position: relative; height: 48px; background-color: var(--panel); background-image: repeating-linear-gradient(to right, transparent 0, transparent 69px, var(--border) 69px, var(--border) 70px); display: flex; align-items: center; }
-          .bars-row[data-facility="CC"] { background-image: linear-gradient(to right, color-mix(in srgb, var(--fac-CC) 14%, transparent), color-mix(in srgb, var(--fac-CC) 14%, transparent)), repeating-linear-gradient(to right, transparent 0, transparent 69px, var(--border) 69px, var(--border) 70px); }
-          .bars-row[data-facility="RC"] { background-image: linear-gradient(to right, color-mix(in srgb, var(--fac-RC) 14%, transparent), color-mix(in srgb, var(--fac-RC) 14%, transparent)), repeating-linear-gradient(to right, transparent 0, transparent 69px, var(--border) 69px, var(--border) 70px); }
-          .bars-row[data-facility="MC"] { background-image: linear-gradient(to right, color-mix(in srgb, var(--fac-MC) 14%, transparent), color-mix(in srgb, var(--fac-MC) 14%, transparent)), repeating-linear-gradient(to right, transparent 0, transparent 69px, var(--border) 69px, var(--border) 70px); }
-          .bars-row[data-facility="DC"] { background-image: linear-gradient(to right, color-mix(in srgb, var(--fac-DC) 14%, transparent), color-mix(in srgb, var(--fac-DC) 14%, transparent)), repeating-linear-gradient(to right, transparent 0, transparent 69px, var(--border) 69px, var(--border) 70px); }
-          .bars-row[data-facility="SA"] { background-image: linear-gradient(to right, color-mix(in srgb, var(--fac-SA) 14%, transparent), color-mix(in srgb, var(--fac-SA) 14%, transparent)), repeating-linear-gradient(to right, transparent 0, transparent 69px, var(--border) 69px, var(--border) 70px); }
-          .bars-row[data-facility]:not([data-facility="CC"]):not([data-facility="RC"]):not([data-facility="MC"]):not([data-facility="DC"]):not([data-facility="SA"]) { background-image: linear-gradient(to right, color-mix(in srgb, var(--fac-unknown) 14%, transparent), color-mix(in srgb, var(--fac-unknown) 14%, transparent)), repeating-linear-gradient(to right, transparent 0, transparent 69px, var(--border) 69px, var(--border) 70px); }
           .bars-row.facility-last { border-bottom: 3px solid var(--border-strong); }
           .bars-row.sub-2 { height: 80px; }
           .bars-row.sub-3 { height: 112px; }
@@ -459,7 +448,7 @@ jobs:
           .bar.swim { background: var(--swim); }
           .bar.skate { background: var(--skate); }
           .bar.climb { background: var(--climb); }
-          .bar.conflict { border-color: var(--conflict) !important; box-shadow: 0 0 0 2px rgba(239,68,68,0.55); }
+          .bar.conflict { border-color: var(--conflict); box-shadow: 0 0 0 2px rgba(239,68,68,0.4); }
           
           .bar .emoji { font-size: 14px; }
           .bar .bar-time { font-size: 11px; opacity: 0.9; font-weight: 600; }
@@ -491,16 +480,11 @@ jobs:
           body.hide-skate .bar.skate, body.hide-skate .domain-row.skate { display: none; }
           body.hide-climb .bar.climb, body.hide-climb .domain-row.climb { display: none; }
           
-          body[data-gantt-fac="CC"] #gantt-view .facility-label:not([data-facility="CC"]),
-          body[data-gantt-fac="CC"] #gantt-view .bars-row:not([data-facility="CC"]) { display: none !important; }
-          body[data-gantt-fac="RC"] #gantt-view .facility-label:not([data-facility="RC"]),
-          body[data-gantt-fac="RC"] #gantt-view .bars-row:not([data-facility="RC"]) { display: none !important; }
-          body[data-gantt-fac="MC"] #gantt-view .facility-label:not([data-facility="MC"]),
-          body[data-gantt-fac="MC"] #gantt-view .bars-row:not([data-facility="MC"]) { display: none !important; }
-          body[data-gantt-fac="DC"] #gantt-view .facility-label:not([data-facility="DC"]),
-          body[data-gantt-fac="DC"] #gantt-view .bars-row:not([data-facility="DC"]) { display: none !important; }
-          body[data-gantt-fac="SA"] #gantt-view .facility-label:not([data-facility="SA"]),
-          body[data-gantt-fac="SA"] #gantt-view .bars-row:not([data-facility="SA"]) { display: none !important; }
+          body[data-list-fac="CC"] #list-view .session:not([data-facility="CC"]) { display: none !important; }
+          body[data-list-fac="RC"] #list-view .session:not([data-facility="RC"]) { display: none !important; }
+          body[data-list-fac="MC"] #list-view .session:not([data-facility="MC"]) { display: none !important; }
+          body[data-list-fac="DC"] #list-view .session:not([data-facility="DC"]) { display: none !important; }
+          body[data-list-fac="SA"] #list-view .session:not([data-facility="SA"]) { display: none !important; }
           </style>
           </head>
           <body>
@@ -513,8 +497,8 @@ jobs:
           <a class="chip refresh" href="''' + GITHUB_REPO_URL + '''/actions/workflows/refresh-schedule.yml" target="_blank" title="Opens GitHub Actions - click Run workflow">🔄 Refresh</a>
           <button class="chip active" data-view="list">📋 List</button>
           <button class="chip" data-view="gantt">📊 Gantt</button>
-          <label class="sr-only" for="gantt-facility-select">Facility (Gantt)</label>
-          <select id="gantt-facility-select" title="Show one facility in Gantt view" aria-label="Filter Gantt by facility">
+          <label class="sr-only" for="list-facility-select">Facility (List)</label>
+          <select id="list-facility-select" title="Filter List view by facility" aria-label="Filter list by facility">
           <option value="all" selected>All facilities</option>
           <option value="CC">Collicutt (CC)</option>
           <option value="RC">Don Moore (RC)</option>
@@ -563,7 +547,8 @@ jobs:
                       if items:
                           cards = ""
                           for s in items:
-                              cards += f'<div class="session {domain}"><span class="time">{s["start_time"]} – {s["end_time"]}</span><span class="name">{html_escape.escape(s["name"])}</span><span class="loc">📍 {html_escape.escape(s["location"])}</span></div>'
+                              fac_code, _, _ = get_facility_code(s["venue"])
+                              cards += f'<div class="session {domain}" data-facility="{html_escape.escape(fac_code)}"><span class="time">{s["start_time"]} – {s["end_time"]}</span><span class="name">{html_escape.escape(s["name"])}</span><span class="loc">📍 {html_escape.escape(s["location"])}</span></div>'
                       else:
                           cards = '<span class="empty">— no sessions —</span>'
                       html += f'<div class="domain-row {domain}"><div class="domain-label {domain}"><span>{SPORT_LABEL[domain]}</span><span class="zh">{SPORT_LABEL_ZH[domain]}</span></div><div class="sessions-flex">{cards}</div></div>'
@@ -624,7 +609,7 @@ jobs:
                       sport_list = [sp for sp in ["swim", "skate", "climb"] if sp in fg["sports"]]
                       num_sports = len(sport_list)
                       
-                      html += f'<div class="facility-label" data-facility="{code}" style="grid-row: span {num_sports};"><span class="code">{code}</span><span class="name">{fg["name"]}</span></div>'
+                      html += f'<div class="facility-label" style="grid-row: span {num_sports};"><span class="code">{code}</span><span class="name">{fg["name"]}</span></div>'
                       
                       for idx, sport in enumerate(sport_list):
                           sessions = fg["sports"][sport]
@@ -637,7 +622,7 @@ jobs:
                           if num_sub_rows == 2: sub_cls = " sub-2"
                           elif num_sub_rows >= 3: sub_cls = " sub-3"
                           
-                          html += f'<div class="bars-row{sub_cls}{last_cls}" data-facility="{code}" style="grid-column: 2 / span 16;">'
+                          html += f'<div class="bars-row{sub_cls}{last_cls}" style="grid-column: 2 / span 16;">'
                           
                           loc_to_row = {loc: i for i, loc in enumerate(unique_locations)}
                           
@@ -717,16 +702,26 @@ jobs:
             };
           });
           
+          function updateListDomainRows() {
+            document.querySelectorAll('#list-view .domain-row').forEach(function(row) {
+              var n = 0;
+              row.querySelectorAll('.session').forEach(function(el) {
+                if (window.getComputedStyle(el).display !== 'none') n++;
+              });
+              row.classList.toggle('row-empty', n === 0);
+            });
+          }
           (function() {
-            var facSel = document.getElementById('gantt-facility-select');
-            if (!facSel) return;
-            function applyGanttFacilityFilter() {
-              var v = facSel.value;
-              if (v === 'all') document.body.removeAttribute('data-gantt-fac');
-              else document.body.setAttribute('data-gantt-fac', v);
+            var sel = document.getElementById('list-facility-select');
+            if (!sel) return;
+            function applyListFacilityFilter() {
+              var v = sel.value;
+              if (v === 'all') document.body.removeAttribute('data-list-fac');
+              else document.body.setAttribute('data-list-fac', v);
+              updateListDomainRows();
             }
-            facSel.addEventListener('change', applyGanttFacilityFilter);
-            applyGanttFacilityFilter();
+            sel.addEventListener('change', applyListFacilityFilter);
+            applyListFacilityFilter();
           })();
           
           document.querySelectorAll('[data-toggle]').forEach(function(btn) {
@@ -734,6 +729,7 @@ jobs:
               const key = btn.dataset.toggle;
               btn.classList.toggle('active');
               document.body.classList.toggle('hide-' + key, !btn.classList.contains('active'));
+              updateListDomainRows();
             };
           });
           
