@@ -37,6 +37,7 @@ jobs:
           import json
           import time
           import os
+          from itertools import groupby
           
           # =====================================================
           # CONFIG
@@ -407,7 +408,23 @@ jobs:
           .domain-label.swim { border-left: 3px solid var(--swim); }
           .domain-label.skate { border-left: 3px solid var(--skate); }
           .domain-label.climb { border-left: 3px solid var(--climb); }
-          .sessions-flex { padding: 10px; display: flex; flex-wrap: wrap; gap: 8px; min-height: 48px; align-items: flex-start; }
+          .sessions-flex { padding: 10px; display: flex; flex-direction: column; gap: 14px; min-height: 48px; align-items: stretch; }
+          #list-view .list-facility-group { border-left: 3px solid var(--fac-unknown); padding-left: 10px; }
+          #list-view .list-facility-group[data-facility="CC"] { border-left-color: var(--fac-CC); }
+          #list-view .list-facility-group[data-facility="RC"] { border-left-color: var(--fac-RC); }
+          #list-view .list-facility-group[data-facility="MC"] { border-left-color: var(--fac-MC); }
+          #list-view .list-facility-group[data-facility="DC"] { border-left-color: var(--fac-DC); }
+          #list-view .list-facility-group[data-facility="SA"] { border-left-color: var(--fac-SA); }
+          #list-view .list-facility-group-empty { display: none !important; }
+          #list-view .list-facility-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+          #list-view .list-facility-head .code { flex-shrink: 0; background: var(--accent); color: #0b1222; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; min-width: 28px; text-align: center; }
+          #list-view .list-facility-group[data-facility="CC"] .list-facility-head .code { background: var(--fac-CC); }
+          #list-view .list-facility-group[data-facility="RC"] .list-facility-head .code { background: var(--fac-RC); }
+          #list-view .list-facility-group[data-facility="MC"] .list-facility-head .code { background: var(--fac-MC); }
+          #list-view .list-facility-group[data-facility="DC"] .list-facility-head .code { background: var(--fac-DC); }
+          #list-view .list-facility-group[data-facility="SA"] .list-facility-head .code { background: var(--fac-SA); }
+          #list-view .list-facility-head .fname { font-size: 13px; font-weight: 600; color: var(--text); }
+          #list-view .sessions-flex-inner { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-start; }
           #list-view .session { display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border-radius: 6px; background: var(--panel-2); border: 1px solid var(--border); border-left-width: 4px; border-left-color: var(--fac-unknown); font-size: 12.5px; min-width: 220px; max-width: 320px; }
           #list-view .session[data-facility="CC"] { border-left-color: var(--fac-CC); }
           #list-view .session[data-facility="RC"] { border-left-color: var(--fac-RC); }
@@ -545,10 +562,25 @@ jobs:
                   for domain in ["swim", "skate", "climb"]:
                       items = by_domain[domain]
                       if items:
-                          cards = ""
-                          for s in items:
-                              fac_code, _, _ = get_facility_code(s["venue"])
-                              cards += f'<div class="session {domain}" data-facility="{html_escape.escape(fac_code)}"><span class="time">{s["start_time"]} – {s["end_time"]}</span><span class="name">{html_escape.escape(s["name"])}</span><span class="loc">📍 {html_escape.escape(s["location"])}</span></div>'
+                          def _fac_key(sess):
+                              return get_facility_code(sess["venue"])[0]
+                          items_sorted = sorted(items, key=_fac_key)
+                          parts = []
+                          for fac_code, grp in groupby(items_sorted, key=_fac_key):
+                              grp_list = list(grp)
+                              _, fac_name, _ = get_facility_code(grp_list[0]["venue"])
+                              fname_plain = html_escape.escape(fac_name.replace("<br>", " ").replace("<br/>", " "))
+                              esc_code = html_escape.escape(fac_code)
+                              inner = ""
+                              for s in grp_list:
+                                  fc, _, _ = get_facility_code(s["venue"])
+                                  inner += f'<div class="session {domain}" data-facility="{html_escape.escape(fc)}"><span class="time">{s["start_time"]} – {s["end_time"]}</span><span class="name">{html_escape.escape(s["name"])}</span><span class="loc">📍 {html_escape.escape(s["location"])}</span></div>'
+                              parts.append(
+                                  f'<div class="list-facility-group" data-facility="{esc_code}">'
+                                  f'<div class="list-facility-head"><span class="code">{esc_code}</span><span class="fname">{fname_plain}</span></div>'
+                                  f'<div class="sessions-flex-inner">{inner}</div></div>'
+                              )
+                          cards = "".join(parts)
                       else:
                           cards = '<span class="empty">— no sessions —</span>'
                       html += f'<div class="domain-row {domain}"><div class="domain-label {domain}"><span>{SPORT_LABEL[domain]}</span><span class="zh">{SPORT_LABEL_ZH[domain]}</span></div><div class="sessions-flex">{cards}</div></div>'
@@ -709,6 +741,13 @@ jobs:
                 if (window.getComputedStyle(el).display !== 'none') n++;
               });
               row.classList.toggle('row-empty', n === 0);
+              row.querySelectorAll('.list-facility-group').forEach(function(g) {
+                var m = 0;
+                g.querySelectorAll('.session').forEach(function(el) {
+                  if (window.getComputedStyle(el).display !== 'none') m++;
+                });
+                g.classList.toggle('list-facility-group-empty', m === 0);
+              });
             });
           }
           (function() {

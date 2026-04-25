@@ -28,6 +28,7 @@ import html
 import os
 import re
 import sys
+from itertools import groupby
 from dataclasses import dataclass, field
 from zoneinfo import ZoneInfo
 
@@ -405,10 +406,26 @@ PAGE_TEMPLATE = """<!doctype html>
   .domain-label.skate {{ border-left: 3px solid var(--skate); }}
   .domain-label.climb {{ border-left: 3px solid var(--climb); }}
 
-  .sessions {{
-    padding: 10px; display: flex; flex-wrap: wrap; gap: 8px;
-    min-height: 48px; align-items: flex-start;
+  #list-view .sessions {{
+    padding: 10px; display: flex; flex-direction: column; gap: 14px;
+    min-height: 48px; align-items: stretch;
   }}
+  #list-view .list-facility-group {{ border-left: 3px solid var(--fac-unknown); padding-left: 10px; }}
+  #list-view .list-facility-group[data-facility="CC"] {{ border-left-color: var(--fac-CC); }}
+  #list-view .list-facility-group[data-facility="RC"] {{ border-left-color: var(--fac-RC); }}
+  #list-view .list-facility-group[data-facility="MC"] {{ border-left-color: var(--fac-MC); }}
+  #list-view .list-facility-group[data-facility="DC"] {{ border-left-color: var(--fac-DC); }}
+  #list-view .list-facility-group[data-facility="SA"] {{ border-left-color: var(--fac-SA); }}
+  #list-view .list-facility-group-empty {{ display: none !important; }}
+  #list-view .list-facility-head {{ display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }}
+  #list-view .list-facility-head .code {{ flex-shrink: 0; background: var(--accent); color: #0b1222; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; min-width: 28px; text-align: center; }}
+  #list-view .list-facility-group[data-facility="CC"] .list-facility-head .code {{ background: var(--fac-CC); }}
+  #list-view .list-facility-group[data-facility="RC"] .list-facility-head .code {{ background: var(--fac-RC); }}
+  #list-view .list-facility-group[data-facility="MC"] .list-facility-head .code {{ background: var(--fac-MC); }}
+  #list-view .list-facility-group[data-facility="DC"] .list-facility-head .code {{ background: var(--fac-DC); }}
+  #list-view .list-facility-group[data-facility="SA"] .list-facility-head .code {{ background: var(--fac-SA); }}
+  #list-view .list-facility-head .fname {{ font-size: 13px; font-weight: 600; color: var(--text); }}
+  #list-view .sessions-flex-inner {{ display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-start; }}
   #list-view .session {{
     display: flex; flex-direction: column; gap: 2px;
     padding: 8px 10px; border-radius: 6px;
@@ -519,6 +536,13 @@ PAGE_TEMPLATE = """<!doctype html>
         if (window.getComputedStyle(el).display !== 'none') n++;
       }});
       row.classList.toggle('row-empty', n === 0);
+      row.querySelectorAll('.list-facility-group').forEach(g => {{
+        let m = 0;
+        g.querySelectorAll('.session').forEach(el => {{
+          if (window.getComputedStyle(el).display !== 'none') m++;
+        }});
+        g.classList.toggle('list-facility-group-empty', m === 0);
+      }});
     }});
   }}
   const listFacSel = document.getElementById('list-facility-select');
@@ -555,6 +579,28 @@ PAGE_TEMPLATE = """<!doctype html>
 """
 
 
+def _list_facility_groups_html(domain_key: str, items: list[Session]) -> str:
+    def fac_key(s: Session) -> str:
+        return get_facility_code(s.venue)[0]
+
+    parts: list[str] = []
+    for code, grp in groupby(sorted(items, key=fac_key), key=fac_key):
+        grp_list = list(grp)
+        _, fac_name, _ = get_facility_code(grp_list[0].venue)
+        fname_plain = html.escape(
+            fac_name.replace("<br>", " ").replace("<br/>", " ")
+        )
+        esc_code = html.escape(code)
+        inner = "\n".join(_render_session_card(s) for s in grp_list)
+        parts.append(
+            f'<div class="list-facility-group" data-facility="{esc_code}">'
+            f'<div class="list-facility-head"><span class="code">{esc_code}</span>'
+            f'<span class="fname">{fname_plain}</span></div>'
+            f'<div class="sessions-flex-inner">{inner}</div></div>'
+        )
+    return "\n".join(parts)
+
+
 def render_html(sessions: list[Session], start_date: dt.date, days: int) -> str:
     by_day: dict[dt.date, dict[str, list[Session]]] = {}
     for s in sessions:
@@ -573,7 +619,7 @@ def render_html(sessions: list[Session], start_date: dt.date, days: int) -> str:
         for domain_key, meta in CATEGORIES.items():
             items = day_sessions.get(domain_key, [])
             if items:
-                cards = "\n".join(_render_session_card(s) for s in items)
+                cards = _list_facility_groups_html(domain_key, items)
             else:
                 cards = '<span class="empty">— no sessions —</span>'
             rows_html.append(
