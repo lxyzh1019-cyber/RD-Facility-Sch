@@ -450,6 +450,8 @@ jobs:
           
           .time-cell { background: var(--panel-3); border-bottom: 2px solid var(--border-strong); border-right: 1px solid var(--border); padding: 8px 0; text-align: center; font-size: 12px; font-weight: 700; color: var(--muted); }
           .time-cell.corner { border-right: 2px solid var(--border-strong); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+          .time-cell.school-start { color: var(--fresh); background: rgba(34,197,94,0.18); border-bottom-color: var(--fresh); }
+          .time-cell.school-end { color: var(--conflict); background: rgba(239,68,68,0.18); border-bottom-color: var(--conflict); }
           
           .facility-label { background: var(--panel-2); border-right: 2px solid var(--border-strong); border-bottom: 3px solid var(--border-strong); padding: 0 12px; display: flex; gap: 8px; align-items: center; justify-content: flex-start; }
           .facility-label .code { flex-shrink: 0; background: var(--accent); color: #0b1222; padding: 3px 7px; border-radius: 4px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; min-width: 32px; text-align: center; }
@@ -457,6 +459,9 @@ jobs:
           
           .bars-row { position: relative; height: 48px; background-color: var(--panel); background-image: repeating-linear-gradient(to right, transparent 0, transparent 69px, var(--border) 69px, var(--border) 70px); display: flex; align-items: center; }
           .bars-row.facility-last { border-bottom: 3px solid var(--border-strong); }
+          .bars-row::before, .bars-row::after { content: ""; position: absolute; top: 0; bottom: 0; width: 2px; pointer-events: none; z-index: 2; }
+          .bars-row::before { left: 140px; background: var(--fresh); box-shadow: 0 0 0 1px rgba(0,0,0,0.35); }
+          .bars-row::after { left: 630px; background: var(--conflict); box-shadow: 0 0 0 1px rgba(0,0,0,0.35); }
           .bars-row.sub-2 { height: 80px; }
           .bars-row.sub-3 { height: 112px; }
           
@@ -621,7 +626,15 @@ jobs:
                   for hour in range(6, 22):
                       period = "AM" if hour < 12 else "PM"
                       display_hour = hour if hour <= 12 else hour - 12
-                      html += f'<div class="time-cell">{display_hour} {period}</div>'
+                      extra_cls = ""
+                      prefix = ""
+                      if hour == 8:
+                          extra_cls = " school-start"
+                          prefix = "🏫 "
+                      elif hour == 15:
+                          extra_cls = " school-end"
+                          prefix = "🏫 "
+                      html += f'<div class="time-cell{extra_cls}">{prefix}{display_hour} {period}</div>'
                   
                   # Group by facility → sport
                   facility_groups = {}
