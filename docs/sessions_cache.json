@@ -1,621 +1,10 @@
 {
   "days": {
-    "2026-06-22": [
-      {
-        "date": "2026-06-22",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Recreation Centre - Outdoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "40",
-        "start_time": "5:30 AM",
-        "end_time": "9:00 AM\n    210 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-22",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Don Moore Recreation Centre - Indoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "40",
-        "start_time": "5:30 AM",
-        "end_time": "9:00 AM\n    210 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-22",
-        "domain": "swim",
-        "name": "Lane Swim",
-        "location": "Collicutt Centre - Water Park",
-        "venue": "Leisure Centres - Collicutt Centre",
-        "spaces": "30",
-        "start_time": "6:30 AM",
-        "end_time": "9:00 AM\n    150 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-22",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "G.H. Dawe Community Centre - Lane Pool",
-        "venue": "Leisure Centres - G.H. Dawe Community Centre",
-        "spaces": "8",
-        "start_time": "6:30 AM",
-        "end_time": "9:00 AM\n    150 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-22",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Michener Aquatic Centre - Main Pool",
-        "venue": "Leisure Centres - Michener Aquatic Centre",
-        "spaces": "50",
-        "start_time": "7:30 AM",
-        "end_time": "9:00 AM\n    90 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-22",
-        "domain": "swim",
-        "name": "Public Swimming",
-        "location": "G.H. Dawe Community Centre - Water Park",
-        "venue": "Leisure Centres - G.H. Dawe Community Centre",
-        "spaces": "250",
-        "start_time": "10:00 AM",
-        "end_time": "9:00 PM\n    660 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-22",
-        "domain": "swim",
-        "name": "Public Swimming",
-        "location": "Collicutt Centre - Water Park",
-        "venue": "Leisure Centres - Collicutt Centre",
-        "spaces": "350",
-        "start_time": "10:00 AM",
-        "end_time": "9:00 PM\n    660 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-22",
-        "domain": "swim",
-        "name": "Adult & Child Swimming",
-        "location": "Michener Aquatic Centre - Warm Pool",
-        "venue": "Leisure Centres - Michener Aquatic Centre",
-        "spaces": "50",
-        "start_time": "11:00 AM",
-        "end_time": "1:00 PM\n    120 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-22",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Michener Aquatic Centre - Main Pool",
-        "venue": "Leisure Centres - Michener Aquatic Centre",
-        "spaces": "50",
-        "start_time": "11:00 AM",
-        "end_time": "1:00 PM\n    120 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-22",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Don Moore Recreation Centre - Indoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "40",
-        "start_time": "12:00 PM",
-        "end_time": "1:00 PM\n    60 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-22",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "G.H. Dawe Community Centre - Lane Pool",
-        "venue": "Leisure Centres - G.H. Dawe Community Centre",
-        "spaces": "8",
-        "start_time": "12:00 PM",
-        "end_time": "1:00 PM\n    60 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-22",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Recreation Centre - Outdoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "40",
-        "start_time": "12:00 PM",
-        "end_time": "1:00 PM\n    60 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-22",
-        "domain": "swim",
-        "name": "Public & Lane Swimming",
-        "location": "Don Moore Recreation Centre - Indoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "40",
-        "start_time": "3:00 PM",
-        "end_time": "7:30 PM\n    270 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-22",
-        "domain": "swim",
-        "name": "Public Swimming",
-        "location": "Recreation Centre - Outdoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "200",
-        "start_time": "3:30 PM",
-        "end_time": "7:30 PM\n    240 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-22",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Recreation Centre - Outdoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "40",
-        "start_time": "8:00 PM",
-        "end_time": "9:30 PM\n    90 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-22",
-        "domain": "swim",
-        "name": "Lane Swimming - Online Reservation",
-        "location": "Michener Aquatic Centre - Main Pool",
-        "venue": "Leisure Centres - Michener Aquatic Centre",
-        "spaces": "25",
-        "start_time": "8:30 PM",
-        "end_time": "10:00 PM\n    90 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-22",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Don Moore Recreation Centre - Indoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "40",
-        "start_time": "8:30 PM",
-        "end_time": "10:00 PM\n    90 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-22",
-        "domain": "skate",
-        "name": "Drop In Roller Skating DC",
-        "location": "G.H Dawe Community Centre - Arena",
-        "venue": "Leisure Centres - G.H. Dawe Community Centre",
-        "spaces": "75",
-        "start_time": "3:30 PM",
-        "end_time": "5:30 PM\n    120 mins",
-        "conflicts": []
-      }
-    ],
-    "2026-06-23": [
-      {
-        "date": "2026-06-23",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Don Moore Recreation Centre - Indoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "40",
-        "start_time": "5:30 AM",
-        "end_time": "9:00 AM\n    210 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-23",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Recreation Centre - Outdoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "40",
-        "start_time": "5:30 AM",
-        "end_time": "9:00 AM\n    210 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-23",
-        "domain": "swim",
-        "name": "Lane Swim",
-        "location": "Collicutt Centre - Water Park",
-        "venue": "Leisure Centres - Collicutt Centre",
-        "spaces": "30",
-        "start_time": "6:30 AM",
-        "end_time": "9:00 AM\n    150 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-23",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "G.H. Dawe Community Centre - Lane Pool",
-        "venue": "Leisure Centres - G.H. Dawe Community Centre",
-        "spaces": "8",
-        "start_time": "6:30 AM",
-        "end_time": "9:00 AM\n    150 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-23",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Michener Aquatic Centre - Main Pool",
-        "venue": "Leisure Centres - Michener Aquatic Centre",
-        "spaces": "50",
-        "start_time": "7:30 AM",
-        "end_time": "9:00 AM\n    90 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-23",
-        "domain": "swim",
-        "name": "Public Swimming",
-        "location": "Collicutt Centre - Water Park",
-        "venue": "Leisure Centres - Collicutt Centre",
-        "spaces": "350",
-        "start_time": "10:00 AM",
-        "end_time": "9:00 PM\n    660 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-23",
-        "domain": "swim",
-        "name": "Public Swimming",
-        "location": "G.H. Dawe Community Centre - Water Park",
-        "venue": "Leisure Centres - G.H. Dawe Community Centre",
-        "spaces": "250",
-        "start_time": "10:00 AM",
-        "end_time": "9:00 PM\n    660 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-23",
-        "domain": "swim",
-        "name": "Adult & Child Swimming",
-        "location": "Michener Aquatic Centre - Warm Pool",
-        "venue": "Leisure Centres - Michener Aquatic Centre",
-        "spaces": "50",
-        "start_time": "11:00 AM",
-        "end_time": "1:00 PM\n    120 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-23",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Michener Aquatic Centre - Main Pool",
-        "venue": "Leisure Centres - Michener Aquatic Centre",
-        "spaces": "50",
-        "start_time": "11:00 AM",
-        "end_time": "1:00 PM\n    120 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-23",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Recreation Centre - Outdoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "40",
-        "start_time": "12:00 PM",
-        "end_time": "1:00 PM\n    60 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-23",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Don Moore Recreation Centre - Indoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "40",
-        "start_time": "12:00 PM",
-        "end_time": "1:00 PM\n    60 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-23",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "G.H. Dawe Community Centre - Lane Pool",
-        "venue": "Leisure Centres - G.H. Dawe Community Centre",
-        "spaces": "8",
-        "start_time": "12:00 PM",
-        "end_time": "3:00 PM\n    180 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-23",
-        "domain": "swim",
-        "name": "55+ Swimming",
-        "location": "Michener Aquatic Centre - Main Pool",
-        "venue": "Leisure Centres - Michener Aquatic Centre",
-        "spaces": "100",
-        "start_time": "1:00 PM",
-        "end_time": "2:00 PM\n    60 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-23",
-        "domain": "swim",
-        "name": "Public & Lane Swimming",
-        "location": "Don Moore Recreation Centre - Indoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "40",
-        "start_time": "2:15 PM",
-        "end_time": "4:00 PM\n    105 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-23",
-        "domain": "swim",
-        "name": "Public Swimming",
-        "location": "Recreation Centre - Outdoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "200",
-        "start_time": "3:30 PM",
-        "end_time": "7:30 PM\n    240 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-23",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Recreation Centre - Outdoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "40",
-        "start_time": "8:00 PM",
-        "end_time": "9:30 PM\n    90 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-23",
-        "domain": "swim",
-        "name": "Lane Swimming - Online Reservation",
-        "location": "Michener Aquatic Centre - Main Pool",
-        "venue": "Leisure Centres - Michener Aquatic Centre",
-        "spaces": "25",
-        "start_time": "8:00 PM",
-        "end_time": "10:00 PM\n    120 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-23",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Don Moore Recreation Centre - Indoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "40",
-        "start_time": "8:30 PM",
-        "end_time": "10:00 PM\n    90 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-23",
-        "domain": "skate",
-        "name": "Drop-in Adult Ball Hockey DC",
-        "location": "G.H Dawe Community Centre - Arena",
-        "venue": "Leisure Centres - G.H. Dawe Community Centre",
-        "spaces": "75",
-        "start_time": "11:30 AM",
-        "end_time": "1:00 PM\n    90 mins",
-        "conflicts": []
-      }
-    ],
-    "2026-06-24": [
-      {
-        "date": "2026-06-24",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Recreation Centre - Outdoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "40",
-        "start_time": "5:30 AM",
-        "end_time": "9:00 AM\n    210 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-24",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Don Moore Recreation Centre - Indoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "40",
-        "start_time": "5:30 AM",
-        "end_time": "9:00 AM\n    210 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-24",
-        "domain": "swim",
-        "name": "Lane Swim",
-        "location": "Collicutt Centre - Water Park",
-        "venue": "Leisure Centres - Collicutt Centre",
-        "spaces": "30",
-        "start_time": "6:30 AM",
-        "end_time": "9:00 AM\n    150 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-24",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "G.H. Dawe Community Centre - Lane Pool",
-        "venue": "Leisure Centres - G.H. Dawe Community Centre",
-        "spaces": "8",
-        "start_time": "6:30 AM",
-        "end_time": "9:00 AM\n    150 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-24",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Michener Aquatic Centre - Main Pool",
-        "venue": "Leisure Centres - Michener Aquatic Centre",
-        "spaces": "50",
-        "start_time": "7:30 AM",
-        "end_time": "9:00 AM\n    90 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-24",
-        "domain": "swim",
-        "name": "Public Swimming",
-        "location": "G.H. Dawe Community Centre - Water Park",
-        "venue": "Leisure Centres - G.H. Dawe Community Centre",
-        "spaces": "250",
-        "start_time": "10:00 AM",
-        "end_time": "9:00 PM\n    660 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-24",
-        "domain": "swim",
-        "name": "Public Swimming",
-        "location": "Collicutt Centre - Water Park",
-        "venue": "Leisure Centres - Collicutt Centre",
-        "spaces": "350",
-        "start_time": "10:00 AM",
-        "end_time": "9:00 PM\n    660 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-24",
-        "domain": "swim",
-        "name": "Adult & Child Swimming",
-        "location": "Michener Aquatic Centre - Warm Pool",
-        "venue": "Leisure Centres - Michener Aquatic Centre",
-        "spaces": "50",
-        "start_time": "11:00 AM",
-        "end_time": "1:00 PM\n    120 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-24",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Michener Aquatic Centre - Main Pool",
-        "venue": "Leisure Centres - Michener Aquatic Centre",
-        "spaces": "50",
-        "start_time": "11:00 AM",
-        "end_time": "1:00 PM\n    120 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-24",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "G.H. Dawe Community Centre - Lane Pool",
-        "venue": "Leisure Centres - G.H. Dawe Community Centre",
-        "spaces": "8",
-        "start_time": "12:00 PM",
-        "end_time": "1:00 PM\n    60 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-24",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Recreation Centre - Outdoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "40",
-        "start_time": "12:00 PM",
-        "end_time": "1:00 PM\n    60 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-24",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Don Moore Recreation Centre - Indoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "40",
-        "start_time": "12:00 PM",
-        "end_time": "1:00 PM\n    60 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-24",
-        "domain": "swim",
-        "name": "Public & Lane Swimming",
-        "location": "Don Moore Recreation Centre - Indoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "40",
-        "start_time": "3:00 PM",
-        "end_time": "7:30 PM\n    270 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-24",
-        "domain": "swim",
-        "name": "Public Swimming",
-        "location": "Recreation Centre - Outdoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "200",
-        "start_time": "3:30 PM",
-        "end_time": "7:30 PM\n    240 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-24",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Recreation Centre - Outdoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "40",
-        "start_time": "8:00 PM",
-        "end_time": "9:30 PM\n    90 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-24",
-        "domain": "swim",
-        "name": "Lane Swimming - Online Reservation",
-        "location": "Michener Aquatic Centre - Main Pool",
-        "venue": "Leisure Centres - Michener Aquatic Centre",
-        "spaces": "25",
-        "start_time": "8:30 PM",
-        "end_time": "10:00 PM\n    90 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-24",
-        "domain": "swim",
-        "name": "Lane Swimming",
-        "location": "Don Moore Recreation Centre - Indoor Pool",
-        "venue": "Leisure Centres - Don Moore Recreation Centre",
-        "spaces": "40",
-        "start_time": "8:30 PM",
-        "end_time": "10:00 PM\n    90 mins",
-        "conflicts": []
-      },
-      {
-        "date": "2026-06-24",
-        "domain": "skate",
-        "name": "Drop In Roller Skating DC",
-        "location": "G.H Dawe Community Centre - Arena",
-        "venue": "Leisure Centres - G.H. Dawe Community Centre",
-        "spaces": "75",
-        "start_time": "3:30 PM",
-        "end_time": "5:30 PM\n    120 mins",
-        "conflicts": []
-      }
-    ],
     "2026-06-25": [
       {
         "date": "2026-06-25",
         "domain": "swim",
-        "name": "Lane Swimming",
+        "name": "Outdoor Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "40",
@@ -714,7 +103,7 @@
       {
         "date": "2026-06-25",
         "domain": "swim",
-        "name": "Lane Swimming",
+        "name": "Outdoor Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "40",
@@ -769,7 +158,7 @@
       {
         "date": "2026-06-25",
         "domain": "swim",
-        "name": "Public Swimming",
+        "name": "Outdoor Public Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "200",
@@ -780,7 +169,7 @@
       {
         "date": "2026-06-25",
         "domain": "swim",
-        "name": "Lane Swimming",
+        "name": "Outdoor Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "40",
@@ -794,7 +183,7 @@
         "name": "Lane Swimming - Online Reservation",
         "location": "Michener Aquatic Centre - Main Pool",
         "venue": "Leisure Centres - Michener Aquatic Centre",
-        "spaces": "25",
+        "spaces": "24",
         "start_time": "8:00 PM",
         "end_time": "10:00 PM\n    120 mins",
         "conflicts": []
@@ -848,7 +237,7 @@
       {
         "date": "2026-06-26",
         "domain": "swim",
-        "name": "Lane Swimming",
+        "name": "Outdoor Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "40",
@@ -936,7 +325,7 @@
       {
         "date": "2026-06-26",
         "domain": "swim",
-        "name": "Lane Swimming",
+        "name": "Outdoor Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "40",
@@ -980,7 +369,7 @@
       {
         "date": "2026-06-26",
         "domain": "swim",
-        "name": "Public Swimming",
+        "name": "Outdoor Public Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "200",
@@ -1035,7 +424,7 @@
       {
         "date": "2026-06-26",
         "domain": "swim",
-        "name": "Lane Swimming",
+        "name": "Outdoor Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "40",
@@ -1136,7 +525,7 @@
       {
         "date": "2026-06-27",
         "domain": "swim",
-        "name": "Lane Swimming",
+        "name": "Outdoor Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "40",
@@ -1169,7 +558,7 @@
       {
         "date": "2026-06-27",
         "domain": "swim",
-        "name": "Public Swimming",
+        "name": "Outdoor Public Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "200",
@@ -1191,7 +580,7 @@
       {
         "date": "2026-06-27",
         "domain": "swim",
-        "name": "Lane Swimming",
+        "name": "Outdoor Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "40",
@@ -1270,7 +659,7 @@
       {
         "date": "2026-06-28",
         "domain": "swim",
-        "name": "Lane Swimming",
+        "name": "Outdoor Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "40",
@@ -1281,7 +670,7 @@
       {
         "date": "2026-06-28",
         "domain": "swim",
-        "name": "Public Swimming",
+        "name": "Outdoor Public Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "200",
@@ -1338,7 +727,7 @@
       {
         "date": "2026-06-29",
         "domain": "swim",
-        "name": "Lane Swimming",
+        "name": "Outdoor Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "40",
@@ -1415,7 +804,7 @@
       {
         "date": "2026-06-29",
         "domain": "swim",
-        "name": "Public & Lane Swimming",
+        "name": "Outdoor Public & Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "150",
@@ -1470,7 +859,7 @@
       {
         "date": "2026-06-29",
         "domain": "swim",
-        "name": "Public Swimming",
+        "name": "Outdoor Public Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "200",
@@ -1503,7 +892,7 @@
       {
         "date": "2026-06-29",
         "domain": "swim",
-        "name": "Lane Swimming",
+        "name": "Outdoor Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "40",
@@ -1517,7 +906,7 @@
         "name": "Lane Swimming - Online Reservation",
         "location": "Michener Aquatic Centre - Main Pool",
         "venue": "Leisure Centres - Michener Aquatic Centre",
-        "spaces": "25",
+        "spaces": "24",
         "start_time": "8:30 PM",
         "end_time": "10:00 PM\n    90 mins",
         "conflicts": []
@@ -1560,7 +949,7 @@
       {
         "date": "2026-06-30",
         "domain": "swim",
-        "name": "Lane Swimming",
+        "name": "Outdoor Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "40",
@@ -1637,7 +1026,7 @@
       {
         "date": "2026-06-30",
         "domain": "swim",
-        "name": "Public & Lane Swimming",
+        "name": "Outdoor Public & Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "150",
@@ -1692,7 +1081,7 @@
       {
         "date": "2026-06-30",
         "domain": "swim",
-        "name": "Public Swimming",
+        "name": "Outdoor Public Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "200",
@@ -1728,7 +1117,7 @@
         "name": "Lane Swimming - Online Reservation",
         "location": "Michener Aquatic Centre - Main Pool",
         "venue": "Leisure Centres - Michener Aquatic Centre",
-        "spaces": "25",
+        "spaces": "24",
         "start_time": "8:00 PM",
         "end_time": "10:00 PM\n    120 mins",
         "conflicts": []
@@ -1736,7 +1125,7 @@
       {
         "date": "2026-06-30",
         "domain": "swim",
-        "name": "Lane Swimming",
+        "name": "Outdoor Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "40",
@@ -1771,7 +1160,7 @@
       {
         "date": "2026-07-01",
         "domain": "swim",
-        "name": "Public Swimming",
+        "name": "Outdoor Public Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "200",
@@ -1850,7 +1239,7 @@
       {
         "date": "2026-07-02",
         "domain": "swim",
-        "name": "Lane Swimming",
+        "name": "Outdoor Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "40",
@@ -1905,7 +1294,7 @@
       {
         "date": "2026-07-02",
         "domain": "swim",
-        "name": "Public & Lane Swimming",
+        "name": "Outdoor Public & Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "150",
@@ -1971,7 +1360,7 @@
       {
         "date": "2026-07-02",
         "domain": "swim",
-        "name": "Public Swimming",
+        "name": "Outdoor Public Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "200",
@@ -2015,7 +1404,7 @@
       {
         "date": "2026-07-02",
         "domain": "swim",
-        "name": "Lane Swimming",
+        "name": "Outdoor Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "40",
@@ -2039,7 +1428,7 @@
       {
         "date": "2026-07-03",
         "domain": "swim",
-        "name": "Lane Swimming",
+        "name": "Outdoor Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "40",
@@ -2083,7 +1472,7 @@
       {
         "date": "2026-07-03",
         "domain": "swim",
-        "name": "Public & Lane Swimming",
+        "name": "Outdoor Public & Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "150",
@@ -2160,7 +1549,7 @@
       {
         "date": "2026-07-03",
         "domain": "swim",
-        "name": "Public Swimming",
+        "name": "Outdoor Public Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "200",
@@ -2215,7 +1604,7 @@
       {
         "date": "2026-07-03",
         "domain": "swim",
-        "name": "Lane Swimming",
+        "name": "Outdoor Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "40",
@@ -2272,7 +1661,7 @@
       {
         "date": "2026-07-04",
         "domain": "swim",
-        "name": "Lane Swimming",
+        "name": "Outdoor Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "40",
@@ -2316,7 +1705,7 @@
       {
         "date": "2026-07-04",
         "domain": "swim",
-        "name": "Public Swimming",
+        "name": "Outdoor Public Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "200",
@@ -2360,7 +1749,7 @@
       {
         "date": "2026-07-04",
         "domain": "swim",
-        "name": "Lane Swimming",
+        "name": "Outdoor Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "40",
@@ -2450,7 +1839,7 @@
       {
         "date": "2026-07-05",
         "domain": "swim",
-        "name": "Lane Swimming",
+        "name": "Outdoor Lane Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "40",
@@ -2461,7 +1850,7 @@
       {
         "date": "2026-07-05",
         "domain": "swim",
-        "name": "Public Swimming",
+        "name": "Outdoor Public Swimming",
         "location": "Recreation Centre - Outdoor Pool",
         "venue": "Leisure Centres - Don Moore Recreation Centre",
         "spaces": "200",
@@ -2524,22 +1913,633 @@
         "end_time": "7:30 PM\n    60 mins",
         "conflicts": []
       }
+    ],
+    "2026-07-06": [
+      {
+        "date": "2026-07-06",
+        "domain": "swim",
+        "name": "Outdoor Lane Swimming",
+        "location": "Recreation Centre - Outdoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "40",
+        "start_time": "5:30 AM",
+        "end_time": "9:00 AM\n    210 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-06",
+        "domain": "swim",
+        "name": "Lane Swimming",
+        "location": "Don Moore Recreation Centre - Indoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "40",
+        "start_time": "5:30 AM",
+        "end_time": "9:00 AM\n    210 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-06",
+        "domain": "swim",
+        "name": "Lane Swimming",
+        "location": "G.H. Dawe Community Centre - Lane Pool",
+        "venue": "Leisure Centres - G.H. Dawe Community Centre",
+        "spaces": "8",
+        "start_time": "6:30 AM",
+        "end_time": "8:00 AM\n    90 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-06",
+        "domain": "swim",
+        "name": "Lane Swim",
+        "location": "Collicutt Centre - Water Park",
+        "venue": "Leisure Centres - Collicutt Centre",
+        "spaces": "30",
+        "start_time": "6:30 AM",
+        "end_time": "8:30 AM\n    120 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-06",
+        "domain": "swim",
+        "name": "Lane Swimming",
+        "location": "Michener Aquatic Centre - Main Pool",
+        "venue": "Leisure Centres - Michener Aquatic Centre",
+        "spaces": "50",
+        "start_time": "8:00 AM",
+        "end_time": "9:00 AM\n    60 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-06",
+        "domain": "swim",
+        "name": "Outdoor Public & Lane Swimming",
+        "location": "Recreation Centre - Outdoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "150",
+        "start_time": "10:30 AM",
+        "end_time": "12:30 PM\n    120 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-06",
+        "domain": "swim",
+        "name": "Lane Swimming",
+        "location": "Michener Aquatic Centre - Main Pool",
+        "venue": "Leisure Centres - Michener Aquatic Centre",
+        "spaces": "50",
+        "start_time": "11:00 AM",
+        "end_time": "1:00 PM\n    120 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-06",
+        "domain": "swim",
+        "name": "Public Swimming",
+        "location": "G.H. Dawe Community Centre - Water Park",
+        "venue": "Leisure Centres - G.H. Dawe Community Centre",
+        "spaces": "250",
+        "start_time": "12:00 PM",
+        "end_time": "9:00 PM\n    540 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-06",
+        "domain": "swim",
+        "name": "Public Swimming",
+        "location": "Collicutt Centre - Water Park",
+        "venue": "Leisure Centres - Collicutt Centre",
+        "spaces": "350",
+        "start_time": "12:00 PM",
+        "end_time": "9:00 PM\n    540 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-06",
+        "domain": "swim",
+        "name": "Adult & Child Swimming",
+        "location": "Michener Aquatic Centre - Warm Pool",
+        "venue": "Leisure Centres - Michener Aquatic Centre",
+        "spaces": "50",
+        "start_time": "12:00 PM",
+        "end_time": "1:00 PM\n    60 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-06",
+        "domain": "swim",
+        "name": "Lane Swimming",
+        "location": "Don Moore Recreation Centre - Indoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "40",
+        "start_time": "12:00 PM",
+        "end_time": "1:00 PM\n    60 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-06",
+        "domain": "swim",
+        "name": "Outdoor Public Swimming",
+        "location": "Recreation Centre - Outdoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "200",
+        "start_time": "12:30 PM",
+        "end_time": "8:00 PM\n    450 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-06",
+        "domain": "swim",
+        "name": "55+ Swimming",
+        "location": "Don Moore Recreation Centre - Indoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "100",
+        "start_time": "1:00 PM",
+        "end_time": "2:00 PM\n    60 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-06",
+        "domain": "swim",
+        "name": "Public & Lane Swimming",
+        "location": "Michener Aquatic Centre - Joint Pools (3)",
+        "venue": "Leisure Centres - Michener Aquatic Centre",
+        "spaces": "100",
+        "start_time": "1:00 PM",
+        "end_time": "2:30 PM\n    90 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-06",
+        "domain": "swim",
+        "name": "Public Swimming",
+        "location": "Don Moore Recreation Centre - Indoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "80",
+        "start_time": "2:00 PM",
+        "end_time": "5:00 PM\n    180 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-06",
+        "domain": "swim",
+        "name": "Outdoor Lane Swimming",
+        "location": "Recreation Centre - Outdoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "40",
+        "start_time": "8:30 PM",
+        "end_time": "9:30 PM\n    60 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-06",
+        "domain": "swim",
+        "name": "Lane Swimming",
+        "location": "Don Moore Recreation Centre - Indoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "40",
+        "start_time": "8:30 PM",
+        "end_time": "10:00 PM\n    90 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-06",
+        "domain": "skate",
+        "name": "Drop In Roller Skating DC",
+        "location": "G.H Dawe Community Centre - Arena",
+        "venue": "Leisure Centres - G.H. Dawe Community Centre",
+        "spaces": "75",
+        "start_time": "3:30 PM",
+        "end_time": "5:30 PM\n    120 mins",
+        "conflicts": []
+      }
+    ],
+    "2026-07-07": [
+      {
+        "date": "2026-07-07",
+        "domain": "swim",
+        "name": "Outdoor Lane Swimming",
+        "location": "Recreation Centre - Outdoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "40",
+        "start_time": "5:30 AM",
+        "end_time": "9:00 AM\n    210 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-07",
+        "domain": "swim",
+        "name": "Lane Swimming",
+        "location": "Don Moore Recreation Centre - Indoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "40",
+        "start_time": "5:30 AM",
+        "end_time": "9:00 AM\n    210 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-07",
+        "domain": "swim",
+        "name": "Lane Swim",
+        "location": "Collicutt Centre - Water Park",
+        "venue": "Leisure Centres - Collicutt Centre",
+        "spaces": "30",
+        "start_time": "6:30 AM",
+        "end_time": "8:30 AM\n    120 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-07",
+        "domain": "swim",
+        "name": "Lane Swimming",
+        "location": "G.H. Dawe Community Centre - Lane Pool",
+        "venue": "Leisure Centres - G.H. Dawe Community Centre",
+        "spaces": "8",
+        "start_time": "6:30 AM",
+        "end_time": "8:00 AM\n    90 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-07",
+        "domain": "swim",
+        "name": "Lane Swimming",
+        "location": "Michener Aquatic Centre - Main Pool",
+        "venue": "Leisure Centres - Michener Aquatic Centre",
+        "spaces": "50",
+        "start_time": "8:00 AM",
+        "end_time": "9:00 AM\n    60 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-07",
+        "domain": "swim",
+        "name": "Outdoor Public & Lane Swimming",
+        "location": "Recreation Centre - Outdoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "150",
+        "start_time": "10:30 AM",
+        "end_time": "12:30 PM\n    120 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-07",
+        "domain": "swim",
+        "name": "Lane Swimming",
+        "location": "Michener Aquatic Centre - Main Pool",
+        "venue": "Leisure Centres - Michener Aquatic Centre",
+        "spaces": "50",
+        "start_time": "11:00 AM",
+        "end_time": "1:00 PM\n    120 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-07",
+        "domain": "swim",
+        "name": "Lane Swimming",
+        "location": "Don Moore Recreation Centre - Indoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "40",
+        "start_time": "12:00 PM",
+        "end_time": "1:00 PM\n    60 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-07",
+        "domain": "swim",
+        "name": "Adult & Child Swimming",
+        "location": "Michener Aquatic Centre - Warm Pool",
+        "venue": "Leisure Centres - Michener Aquatic Centre",
+        "spaces": "50",
+        "start_time": "12:00 PM",
+        "end_time": "1:00 PM\n    60 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-07",
+        "domain": "swim",
+        "name": "Public Swimming",
+        "location": "G.H. Dawe Community Centre - Water Park",
+        "venue": "Leisure Centres - G.H. Dawe Community Centre",
+        "spaces": "250",
+        "start_time": "12:00 PM",
+        "end_time": "9:00 PM\n    540 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-07",
+        "domain": "swim",
+        "name": "Public Swimming",
+        "location": "Collicutt Centre - Water Park",
+        "venue": "Leisure Centres - Collicutt Centre",
+        "spaces": "350",
+        "start_time": "12:00 PM",
+        "end_time": "9:00 PM\n    540 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-07",
+        "domain": "swim",
+        "name": "Outdoor Public Swimming",
+        "location": "Recreation Centre - Outdoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "200",
+        "start_time": "12:30 PM",
+        "end_time": "8:00 PM\n    450 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-07",
+        "domain": "swim",
+        "name": "Public & Lane Swimming",
+        "location": "Michener Aquatic Centre - Joint Pools (3)",
+        "venue": "Leisure Centres - Michener Aquatic Centre",
+        "spaces": "100",
+        "start_time": "1:00 PM",
+        "end_time": "2:30 PM\n    90 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-07",
+        "domain": "swim",
+        "name": "Public Swimming",
+        "location": "Don Moore Recreation Centre - Indoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "80",
+        "start_time": "2:00 PM",
+        "end_time": "5:00 PM\n    180 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-07",
+        "domain": "swim",
+        "name": "Lane Swimming",
+        "location": "Don Moore Recreation Centre - Indoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "40",
+        "start_time": "8:30 PM",
+        "end_time": "10:00 PM\n    90 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-07",
+        "domain": "swim",
+        "name": "Outdoor Lane Swimming",
+        "location": "Recreation Centre - Outdoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "40",
+        "start_time": "8:30 PM",
+        "end_time": "9:30 PM\n    60 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-07",
+        "domain": "skate",
+        "name": "Drop-in Adult Ball Hockey DC",
+        "location": "G.H Dawe Community Centre - Arena",
+        "venue": "Leisure Centres - G.H. Dawe Community Centre",
+        "spaces": "75",
+        "start_time": "11:00 AM",
+        "end_time": "12:30 PM\n    90 mins",
+        "conflicts": []
+      }
+    ],
+    "2026-07-08": [
+      {
+        "date": "2026-07-08",
+        "domain": "swim",
+        "name": "Outdoor Lane Swimming",
+        "location": "Recreation Centre - Outdoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "40",
+        "start_time": "5:30 AM",
+        "end_time": "9:00 AM\n    210 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-08",
+        "domain": "swim",
+        "name": "Lane Swimming",
+        "location": "Don Moore Recreation Centre - Indoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "40",
+        "start_time": "5:30 AM",
+        "end_time": "9:00 AM\n    210 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-08",
+        "domain": "swim",
+        "name": "Lane Swim",
+        "location": "Collicutt Centre - Water Park",
+        "venue": "Leisure Centres - Collicutt Centre",
+        "spaces": "30",
+        "start_time": "6:30 AM",
+        "end_time": "8:30 AM\n    120 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-08",
+        "domain": "swim",
+        "name": "Lane Swimming",
+        "location": "G.H. Dawe Community Centre - Lane Pool",
+        "venue": "Leisure Centres - G.H. Dawe Community Centre",
+        "spaces": "8",
+        "start_time": "6:30 AM",
+        "end_time": "8:00 AM\n    90 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-08",
+        "domain": "swim",
+        "name": "Lane Swimming",
+        "location": "Michener Aquatic Centre - Main Pool",
+        "venue": "Leisure Centres - Michener Aquatic Centre",
+        "spaces": "50",
+        "start_time": "8:00 AM",
+        "end_time": "9:00 AM\n    60 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-08",
+        "domain": "swim",
+        "name": "Outdoor Public & Lane Swimming",
+        "location": "Recreation Centre - Outdoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "150",
+        "start_time": "10:30 AM",
+        "end_time": "12:30 PM\n    120 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-08",
+        "domain": "swim",
+        "name": "Lane Swimming",
+        "location": "Michener Aquatic Centre - Main Pool",
+        "venue": "Leisure Centres - Michener Aquatic Centre",
+        "spaces": "50",
+        "start_time": "11:00 AM",
+        "end_time": "1:00 PM\n    120 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-08",
+        "domain": "swim",
+        "name": "Lane Swimming",
+        "location": "Don Moore Recreation Centre - Indoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "40",
+        "start_time": "12:00 PM",
+        "end_time": "1:00 PM\n    60 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-08",
+        "domain": "swim",
+        "name": "Public Swimming",
+        "location": "Collicutt Centre - Water Park",
+        "venue": "Leisure Centres - Collicutt Centre",
+        "spaces": "350",
+        "start_time": "12:00 PM",
+        "end_time": "9:00 PM\n    540 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-08",
+        "domain": "swim",
+        "name": "Adult & Child Swimming",
+        "location": "Michener Aquatic Centre - Warm Pool",
+        "venue": "Leisure Centres - Michener Aquatic Centre",
+        "spaces": "50",
+        "start_time": "12:00 PM",
+        "end_time": "1:00 PM\n    60 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-08",
+        "domain": "swim",
+        "name": "Public Swimming",
+        "location": "G.H. Dawe Community Centre - Water Park",
+        "venue": "Leisure Centres - G.H. Dawe Community Centre",
+        "spaces": "250",
+        "start_time": "12:00 PM",
+        "end_time": "9:00 PM\n    540 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-08",
+        "domain": "swim",
+        "name": "Outdoor Public Swimming",
+        "location": "Recreation Centre - Outdoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "200",
+        "start_time": "12:30 PM",
+        "end_time": "8:00 PM\n    450 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-08",
+        "domain": "swim",
+        "name": "Public & Lane Swimming",
+        "location": "Michener Aquatic Centre - Joint Pools (3)",
+        "venue": "Leisure Centres - Michener Aquatic Centre",
+        "spaces": "100",
+        "start_time": "1:00 PM",
+        "end_time": "2:30 PM\n    90 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-08",
+        "domain": "swim",
+        "name": "55+ Swimming",
+        "location": "Don Moore Recreation Centre - Indoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "100",
+        "start_time": "1:00 PM",
+        "end_time": "2:00 PM\n    60 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-08",
+        "domain": "swim",
+        "name": "Public Swimming",
+        "location": "Don Moore Recreation Centre - Indoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "80",
+        "start_time": "2:00 PM",
+        "end_time": "5:00 PM\n    180 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-08",
+        "domain": "swim",
+        "name": "Lane Swimming",
+        "location": "Don Moore Recreation Centre - Indoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "40",
+        "start_time": "8:30 PM",
+        "end_time": "10:00 PM\n    90 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-08",
+        "domain": "swim",
+        "name": "Outdoor Lane Swimming",
+        "location": "Recreation Centre - Outdoor Pool",
+        "venue": "Leisure Centres - Don Moore Recreation Centre",
+        "spaces": "40",
+        "start_time": "8:30 PM",
+        "end_time": "9:30 PM\n    60 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-08",
+        "domain": "skate",
+        "name": "Drop In Roller Skating DC",
+        "location": "G.H Dawe Community Centre - Arena",
+        "venue": "Leisure Centres - G.H. Dawe Community Centre",
+        "spaces": "75",
+        "start_time": "3:30 PM",
+        "end_time": "5:30 PM\n    120 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-08",
+        "domain": "climb",
+        "name": "Drop-in Wall Climbing - Fieldhouse",
+        "location": "Collicutt Centre - Field House Climbing Wall",
+        "venue": "Leisure Centres - Collicutt Centre",
+        "spaces": "15",
+        "start_time": "5:30 PM",
+        "end_time": "7:30 PM\n    120 mins",
+        "conflicts": []
+      },
+      {
+        "date": "2026-07-08",
+        "domain": "climb",
+        "name": "Drop-in Wall Climbing - Mr. Big",
+        "location": "Collicutt Centre - Climbing Wall - Main Street",
+        "venue": "Leisure Centres - Collicutt Centre",
+        "spaces": "15",
+        "start_time": "7:30 PM",
+        "end_time": "9:00 PM\n    90 mins",
+        "conflicts": []
+      }
     ]
   },
   "last_updated": {
-    "2026-06-22": "2026-06-22",
-    "2026-06-23": "2026-06-22",
-    "2026-06-24": "2026-06-22",
-    "2026-06-25": "2026-06-22",
-    "2026-06-26": "2026-06-22",
-    "2026-06-27": "2026-06-22",
-    "2026-06-28": "2026-06-22",
-    "2026-06-29": "2026-06-22",
-    "2026-06-30": "2026-06-22",
-    "2026-07-01": "2026-06-22",
-    "2026-07-02": "2026-06-22",
-    "2026-07-03": "2026-06-22",
-    "2026-07-04": "2026-06-22",
-    "2026-07-05": "2026-06-22"
+    "2026-06-25": "2026-06-25",
+    "2026-06-26": "2026-06-25",
+    "2026-06-27": "2026-06-25",
+    "2026-06-28": "2026-06-25",
+    "2026-06-29": "2026-06-25",
+    "2026-06-30": "2026-06-25",
+    "2026-07-01": "2026-06-25",
+    "2026-07-02": "2026-06-25",
+    "2026-07-03": "2026-06-25",
+    "2026-07-04": "2026-06-25",
+    "2026-07-05": "2026-06-25",
+    "2026-07-06": "2026-06-25",
+    "2026-07-07": "2026-06-25",
+    "2026-07-08": "2026-06-25"
   }
 }
